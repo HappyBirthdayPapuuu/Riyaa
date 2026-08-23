@@ -270,11 +270,11 @@ function handleCard23Tap(cardElement) {
     } else {
         // Feedback while tapping
         if (!isDateUnlocked && maxUnlocked >= 23) {
-            showTreasureToast(`🔒 Unlocks on August 31 at 12:00 AM! 🎂 (${card23TapCount}/10 taps)`);
+            showTreasureToast("🔒 Unlocks on August 31 at 12:00 AM! 🎂");
         } else if (!isDateUnlocked) {
-            showTreasureToast(`🔒 Clue 23 unlocks on August 31 at 12:00 AM! ✨ (${card23TapCount}/10 taps)`);
+            showTreasureToast("🔒 Clue 23 unlocks on August 31 at 12:00 AM! ✨");
         } else {
-            showTreasureToast(`🔒 Complete earlier clues first! (${card23TapCount}/10 taps)`);
+            showTreasureToast("🔒 Find the earlier gifts first! 🎁");
         }
     }
 }
