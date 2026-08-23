@@ -28,6 +28,14 @@ function isCakeUnlocked() {
     return isCard23DateUnlocked() || sessionStorage.getItem('cake_backdoor') === 'true' || sessionStorage.getItem('letter_backdoor') === 'true';
 }
 
+function isBirthdaySongActive() {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('backdoor') === 'birthday' || params.get('testBirthday') === 'true' || params.get('birthdaySong') === 'true' || params.get('backdoor') === 'true' || params.get('unlockAll') === 'true') {
+        sessionStorage.setItem('birthday_song_preview', 'true');
+    }
+    return isCard23DateUnlocked() || sessionStorage.getItem('birthday_song_preview') === 'true';
+}
+
 function initCakeNavLock() {
     const cakeCard = document.querySelector('.nav-card[href="cake.html"], a[href="cake.html"]');
     if (cakeCard) {
@@ -62,7 +70,23 @@ function initCakeNavLock() {
             el.dataset.backdoorAttached = 'true';
             el.style.cursor = 'pointer';
             el.addEventListener('click', () => {
-                if (isCakeUnlocked() && isLetterUnlocked()) return;
+                // If backdoor already active, tapping re-plays the birthday song immediately!
+                if (isCakeUnlocked() && isLetterUnlocked() && sessionStorage.getItem('birthday_song_preview') === 'true') {
+                    el.style.transition = 'transform 0.15s ease';
+                    el.style.transform = 'scale(1.3) rotate(12deg)';
+                    setTimeout(() => { el.style.transform = ''; }, 150);
+
+                    const bgAudio = document.getElementById('bg-music');
+                    const playBtn = document.getElementById('play-btn');
+                    if (bgAudio && !bgAudio.paused) {
+                        bgAudio.pause();
+                        if (playBtn) playBtn.textContent = '▶';
+                    }
+
+                    playHappyBirthdayTune();
+                    showTreasureToast("🎵 Playing Happy Birthday song! 🎂");
+                    return;
+                }
 
                 cakeNavTapCount++;
                 clearTimeout(cakeNavTapTimer);
@@ -76,6 +100,7 @@ function initCakeNavLock() {
                     cakeNavTapCount = 0;
                     sessionStorage.setItem('cake_backdoor', 'true');
                     sessionStorage.setItem('letter_backdoor', 'true');
+                    sessionStorage.setItem('birthday_song_preview', 'true');
 
                     if (cakeCard) {
                         cakeCard.style.display = '';
@@ -88,19 +113,26 @@ function initCakeNavLock() {
                         }
                     }
 
+                    // Pause Eppadi Vandhaayo if playing, and immediately play Happy Birthday song!
+                    const bgAudio = document.getElementById('bg-music');
+                    const playBtn = document.getElementById('play-btn');
+                    if (bgAudio && !bgAudio.paused) {
+                        bgAudio.pause();
+                        if (playBtn) playBtn.textContent = '▶';
+                    }
+
+                    playHappyBirthdayTune();
+
                     if (window.confetti) {
                         confetti({
-                            particleCount: 80,
-                            spread: 80,
+                            particleCount: 100,
+                            spread: 90,
                             origin: { y: 0.6 },
-                            colors: ['#ffd700', '#ff6b9e', '#a78bfa', '#34d399']
+                            colors: ['#ffd700', '#ff6b9e', '#a78bfa', '#34d399', '#ff9a9e']
                         });
                     }
-                    const popSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3');
-                    popSound.volume = 0.5;
-                    popSound.play().catch(() => {});
 
-                    showTreasureToast("✨ Secret backdoor unlocked! 📜🎂");
+                    showTreasureToast("✨ Secret backdoor unlocked! Playing Birthday song 🎂🎶");
                 }
             });
         }
@@ -223,8 +255,8 @@ function openEnvelope() {
                 startEmojiRain();
 
                 // Music playback on opening envelope:
-                if (isCard23DateUnlocked()) {
-                    // On/After Aug 31 12:00 AM: Play Happy Birthday celebration song/tune
+                if (isBirthdaySongActive()) {
+                    // On/After Aug 31 12:00 AM (or with backdoor preview): Play Happy Birthday celebration song/tune
                     playHappyBirthdayTune();
                 } else {
                     // All other times: Play "Eppadi Vandhaayo"
