@@ -1,19 +1,31 @@
-// Clear legacy permanent backdoor localStorage flags so closing tab resets locks
+// Clear legacy permanent backdoor localStorage flags
 try {
-    sessionStorage.removeItem('cake_backdoor');
-    sessionStorage.removeItem('card23_backdoor');
+    localStorage.removeItem('cake_backdoor');
+    localStorage.removeItem('card23_backdoor');
+    localStorage.removeItem('letter_backdoor');
 } catch(e) {}
-// --- Make a Wish Nav Card Lock & 10-Tap Backdoor ---
+
+// --- Make a Wish & Letter Section Lock & 10-Tap Backdoor ---
 let cakeNavTapCount = 0;
 let cakeNavTapTimer = null;
+
+function isLetterUnlocked() {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('unlockLetter') === 'true' || params.get('unlockCake') === 'true' || params.get('unlockAll') === 'true' || params.get('backdoor') === 'letter' || params.get('backdoor') === 'cake' || params.get('backdoor') === 'true' || params.get('backdoor') === 'all') {
+        sessionStorage.setItem('letter_backdoor', 'true');
+        sessionStorage.setItem('cake_backdoor', 'true');
+    }
+    return isCard23DateUnlocked() || sessionStorage.getItem('letter_backdoor') === 'true' || sessionStorage.getItem('cake_backdoor') === 'true';
+}
 
 function isCakeUnlocked() {
     // Check URL backdoor parameter for quick testing
     const params = new URLSearchParams(window.location.search);
-    if (params.get('unlockCake') === 'true' || params.get('backdoor') === 'cake') {
+    if (params.get('unlockCake') === 'true' || params.get('unlockLetter') === 'true' || params.get('unlockAll') === 'true' || params.get('backdoor') === 'cake' || params.get('backdoor') === 'letter' || params.get('backdoor') === 'true' || params.get('backdoor') === 'all') {
         sessionStorage.setItem('cake_backdoor', 'true');
+        sessionStorage.setItem('letter_backdoor', 'true');
     }
-    return isCard23DateUnlocked() || sessionStorage.getItem('cake_backdoor') === 'true';
+    return isCard23DateUnlocked() || sessionStorage.getItem('cake_backdoor') === 'true' || sessionStorage.getItem('letter_backdoor') === 'true';
 }
 
 function initCakeNavLock() {
@@ -28,6 +40,17 @@ function initCakeNavLock() {
         }
     }
 
+    const letterSection = document.querySelector('.love-letter-section');
+    if (letterSection) {
+        if (!isLetterUnlocked()) {
+            // Keep letter section completely hidden before Aug 31 12:00 AM
+            letterSection.style.display = 'none';
+        } else {
+            // Revealed once unlocked (by date or backdoor)
+            letterSection.style.display = '';
+        }
+    }
+
     // Attach secret 10-tap backdoor on header badge ("Bettuuu✿") and flower icon (🌸)
     const triggers = [
         document.querySelector('header .badge'),
@@ -39,7 +62,7 @@ function initCakeNavLock() {
             el.dataset.backdoorAttached = 'true';
             el.style.cursor = 'pointer';
             el.addEventListener('click', () => {
-                if (isCakeUnlocked()) return;
+                if (isCakeUnlocked() && isLetterUnlocked()) return;
 
                 cakeNavTapCount++;
                 clearTimeout(cakeNavTapTimer);
@@ -52,9 +75,17 @@ function initCakeNavLock() {
                 if (cakeNavTapCount >= 10) {
                     cakeNavTapCount = 0;
                     sessionStorage.setItem('cake_backdoor', 'true');
+                    sessionStorage.setItem('letter_backdoor', 'true');
 
                     if (cakeCard) {
                         cakeCard.style.display = '';
+                    }
+
+                    if (letterSection) {
+                        letterSection.style.display = '';
+                        if (typeof initLoveLetter === 'function') {
+                            initLoveLetter();
+                        }
                     }
 
                     if (window.confetti) {
@@ -69,11 +100,7 @@ function initCakeNavLock() {
                     popSound.volume = 0.5;
                     popSound.play().catch(() => {});
 
-                    showTreasureToast("✨ Secret backdoor unlocked! Opening Make a Wish... 🎂");
-
-                    setTimeout(() => {
-                        window.location.href = "cake.html";
-                    }, 700);
+                    showTreasureToast("✨ Secret backdoor unlocked! 📜🎂");
                 }
             });
         }
