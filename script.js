@@ -222,18 +222,20 @@ function openEnvelope() {
                 startFloatingHearts();
                 startEmojiRain();
 
-                // If opened after Aug 31 12 AM, trigger happy birthday celebration audio
+                // Music playback on opening envelope:
                 if (isCard23DateUnlocked()) {
+                    // On/After Aug 31 12:00 AM: Play Happy Birthday celebration song/tune
+                    playHappyBirthdayTune();
+                } else {
+                    // All other times: Play "Eppadi Vandhaayo"
                     const audio = document.getElementById('bg-music');
                     const playBtn = document.getElementById('play-btn');
                     if (audio && audio.src && !audio.src.endsWith('index.html')) {
                         audio.play().then(() => {
                             if (playBtn) playBtn.textContent = '⏸';
-                        }).catch(() => {
-                            playHappyBirthdayTune();
+                        }).catch((err) => {
+                            console.log("Audio autoplay note:", err);
                         });
-                    } else {
-                        playHappyBirthdayTune();
                     }
                 }
             }, 800);
