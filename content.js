@@ -125,7 +125,8 @@ window.SITE_CONTENT = {
     "yearLine": "2003 → now 23 ✦",
     "blowButtonText": "🎤 make a wish — blow!",
     "wishTitle": "🎉 wish made! 🎉",
-    "wishSubtitle": "Happy Birthday, Papuu!! ♡"
+    "wishSubtitle": "Happy Birthday, Papuu!! ♡",
+    "birthdaySong": "assets/birthday.mp3"
   },
   "memoriesPage": {
     "title": "Riyuuu's Memories 🫧",
