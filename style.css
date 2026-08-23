@@ -83,14 +83,19 @@ p {
 
     cursor: pointer;
     perspective: 1000px;
-    margin-top: clamp(20px, 5vh, 40px);
-    margin-bottom: 2rem;
+    margin: 0 0 2rem 0;
     position: relative;
     width: var(--env-w);
     height: var(--env-h);
     transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     -webkit-tap-highlight-color: transparent;
     user-select: none;
+    animation: floatEnvelope 3s ease-in-out infinite;
+}
+
+.envelope-container.open {
+    animation: none;
+    cursor: default;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -124,7 +129,7 @@ p {
     border-right: var(--half-w) solid #ff99b3;
     border-top: var(--half-h) solid transparent;
     border-bottom: var(--half-h) solid #ff80a0;
-    border-radius: 0 0 12px 12px;
+    border-radius: 12px;
     z-index: 3;
     pointer-events: none;
 }
@@ -138,6 +143,7 @@ p {
     border-left: var(--half-w) solid transparent;
     border-right: var(--half-w) solid transparent;
     border-top: var(--flap-h) solid #ffb3c6;
+    border-radius: 12px 12px 0 0;
     transform-origin: top;
     transition: transform 0.6s 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 4;
@@ -582,10 +588,6 @@ header h1 {
     .badge {
         font-size: 1.1rem;
         right: 20px;
-    }
-    .envelope-container {
-        width: 280px;
-        height: 180px;
     }
     .grid-container {
         gap: 15px;
@@ -1276,13 +1278,9 @@ header h1 {
 }
 
 /* Global Animations Enhancements */
-.envelope-container {
-    animation: floatEnvelope 3s ease-in-out infinite;
-}
-
 @keyframes floatEnvelope {
     0% { transform: translateY(0px) rotate(0deg); }
-    50% { transform: translateY(-10px) rotate(2deg); }
+    50% { transform: translateY(-8px) rotate(1.5deg); }
     100% { transform: translateY(0px) rotate(0deg); }
 }
 
