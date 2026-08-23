@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Treasure Hunt</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <a href="index.html?skipIntro=true" class="back-btn">← Back</a>
+    <header style="margin-top: 5rem;">
+        <span class="sparkle">✦</span>
+        <h1>The Treasure Hunt</h1>
+        <p class="handwriting" style="font-size: 1.5rem; color: var(--text-light);">23 gifts for 23 years. Follow the clues!</p>
+        <p class="instruction-text" style="margin-top: 10px; margin-bottom: 1rem;">✿ find the gift, then click the button to unlock the next clue.</p>
+        <button id="reset-hunt-btn" class="reset-btn" onclick="resetHunt()">Reset Progress</button>
+    </header>
+
+    <div class="treasure-grid">
+        <!-- Card 1 -->
+        <div class="treasure-card unlocked active" data-card="1" onclick="flipTreasureCard(this)">
+            <div class="treasure-card-inner">
+                <div class="treasure-card-front">
+                    <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=400&auto=format&fit=crop" alt="Clue 1">
+                    <div class="lock-overlay">
+                        <span class="lock-icon">🔒</span>
+                    </div>
+                    <span class="clue-badge">Clue 1</span>
+                </div>
+                <div class="treasure-card-back">
+                    <span class="pin">📌</span>
+                    <p>Clue 1: Placeholder clue for gift 1. Edit this text later!</p>
+                    <button class="found-btn" onclick="event.stopPropagation(); unlockNextCard(1)">Found it! 🎁</button>
+                    <div class="completed-check hidden">✅ Found</div>
+                </div>
+            </div>
+        </div>
+        <!-- Card 2 -->
+        <div class="treasure-card locked" data-card="2" onclick="flipTreasureCard(this)">
+            <div class="treasure-card-inner">
+                <div class="treasure-card-front">
+                    <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=400&auto=format&fit=crop" alt="Clue 2">
+                    <div class="lock-overlay">
+                        <span class="lock-icon">🔒</span>
+                    </div>
+                    <span class="clue-badge">Clue 2</span>
+                </div>
+                <div class="treasure-card-back">
+                    <span class="pin">📌</span>
+                    <p>Clue 2: Placeholder clue for gift 2. Edit this text later!</p>
+                    <button class="found-btn" onclick="event.stopPropagation(); unlockNextCard(2)">Found it! 🎁</button>
+                    <div class="completed-check hidden">✅ Found</div>
+                </div>
+            </div>
+        </div>
+        <!-- Card 3 -->
+        <div class="treasure-card locked" data-card="3" onclick="flipTreasureCard(this)">
+            <div class="treasure-card-inner">
+                <div class="treasure-card-front">
+                    <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=400&auto=format&fit=crop" alt="Clue 3">
+                    <div class="lock-overlay">
+                        <span class="lock-icon">🔒</span>
+                    </div>
+                    <span class="clue-badge">Clue 3</span>
+                </div>
+                <div class="treasure-card-back">
+                    <span class="pin">📌</span>
+                    <p>Clue 3: Placeholder clue for gift 3. Edit this text later!</p>
+                    <button class="found-btn" onclick="event.stopPropagation(); unlockNextCard(3)">Found it! 🎁</button>
+                    <div class="completed-check hidden">✅ Found</div>
+                </div>
+            </div>
+        </div>
+        <!-- Card 4 -->
+        <div class="treasure-card locked" data-card="4" onclick="flipTreasureCard(this)">
+            <div class="treasure-card-inner">
+                <div class="treasure-card-front">
+                    <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=400&auto=format&fit=crop" alt="Clue 4">
+                    <div class="lock-overlay">
+                        <span class="lock-icon">🔒</span>
+                    </div>
+                    <span class="clue-badge">Clue 4</span>
+                </div>
+                <div class="treasure-card-back">
+                    <span class="pin">📌</span>
+                    <p>Clue 4: Placeholder clue for gift 4. Edit this text later!</p>
+                    <button class="found-btn" onclick="event.stopPropagation(); unlockNextCard(4)">Found it! 🎁</button>
+                    <div class="completed-check hidden">✅ Found</div>
+                </div>
+            </div>
+        </div>
+        <!-- Card 5 -->
+        <div class="treasure-card locked" data-card="5" onclick="flipTreasureCard(this)">
+            <div class="treasure-card-inner">
+                <div class="treasure-card-front">
+                    <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=400&auto=format&fit=crop" alt="Clue 5">
+                    <div class="lock-overlay">
+                        <span class="lock-icon">🔒</span>
+                    </div>
+                    <span class="clue-badge">Clue 5</span>
+                </div>
+                <div class="treasure-card-back">
+                    <span class="pin">📌</span>
+                    <p>Clue 5: Placeholder clue for gift 5. Edit this text later!</p>
+                    <button class="found-btn" onclick="event.stopPropagation(); unlockNextCard(5)">Found it! 🎁</button>
+                    <div class="completed-check hidden">✅ Found</div>
+                </div>
+            </div>
+        </div>
+        <!-- Card 6 -->
+        <div class="treasure-card locked" data-card="6" onclick="flipTreasureCard(this)">
+            <div class="treasure-card-inner">
+                <div class="treasure-card-front">
+                    <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=400&auto=format&fit=crop" alt="Clue 6">
+                    <div class="lock-overlay">
+                        <span class="lock-icon">🔒</span>
+                    </div>
+                    <span class="clue-badge">Clue 6</span>
+                </div>
+                <div class="treasure-card-back">
+                    <span class="pin">📌</span>
+                    <p>Clue 6: Placeholder clue for gift 6. Edit this text later!</p>
+                    <button class="found-btn" onclick="event.stopPropagation(); unlockNextCard(6)">Found it! 🎁</button>
+                    <div class="completed-check hidden">✅ Found</div>
+                </div>
+            </div>
+        </div>
+        <!-- Card 7 -->
+        <div class="treasure-card locked" data-card="7" onclick="flipTreasureCard(this)">
+            <div class="treasure-card-inner">
+                <div class="treasure-card-front">
+                    <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=400&auto=format&fit=crop" alt="Clue 7">
+                    <div class="lock-overlay">
+                        <span class="lock-icon">🔒</span>
+                    </div>
+                    <span class="clue-badge">Clue 7</span>
+                </div>
+                <div class="treasure-card-back">
+                    <span class="pin">📌</span>
+                    <p>Clue 7: Placeholder clue for gift 7. Edit this text later!</p>
+                    <button class="found-btn" onclick="event.stopPropagation(); unlockNextCard(7)">Found it! 🎁</button>
+                    <div class="completed-check hidden">✅ Found</div>
+                </div>
+            </div>
+        </div>
+        <!-- Card 8 -->
+        <div class="treasure-card locked" data-card="8" onclick="flipTreasureCard(this)">
+            <div class="treasure-card-inner">
+                <div class="treasure-card-front">
+                    <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=400&auto=format&fit=crop" alt="Clue 8">
+                    <div class="lock-overlay">
+                        <span class="lock-icon">🔒</span>
+                    </div>
+                    <span class="clue-badge">Clue 8</span>
+                </div>
+                <div class="treasure-card-back">
+                    <span class="pin">📌</span>
+                    <p>Clue 8: Placeholder clue for gift 8. Edit this text later!</p>
+                    <button class="found-btn" onclick="event.stopPropagation(); unlockNextCard(8)">Found it! 🎁</button>
+                    <div class="completed-check hidden">✅ Found</div>
+                </div>
+            </div>
+        </div>
+        <!-- Card 9 -->
+        <div class="treasure-card locked" data-card="9" onclick="flipTreasureCard(this)">
+            <div class="treasure-card-inner">
+                <div class="treasure-card-front">
+                    <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=400&auto=format&fit=crop" alt="Clue 9">
+                    <div class="lock-overlay">
+                        <span class="lock-icon">🔒</span>
+                    </div>
+                    <span class="clue-badge">Clue 9</span>
+                </div>
+                <div class="treasure-card-back">
+                    <span class="pin">📌</span>
+                    <p>Clue 9: Placeholder clue for gift 9. Edit this text later!</p>
+                    <button class="found-btn" onclick="event.stopPropagation(); unlockNextCard(9)">Found it! 🎁</button>
+                    <div class="completed-check hidden">✅ Found</div>
+                </div>
+            </div>
+        </div>
+        <!-- Card 10 -->
+        <div class="treasure-card locked" data-card="10" onclick="flipTreasureCard(this)">
+            <div class="treasure-card-inner">
+                <div class="treasure-card-front">
+                    <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=400&auto=format&fit=crop" alt="Clue 10">
+                    <div class="lock-overlay">
+                        <span class="lock-icon">🔒</span>
+                    </div>
+                    <span class="clue-badge">Clue 10</span>
+                </div>
+                <div class="treasure-card-back">
+                    <span class="pin">📌</span>
+                    <p>Clue 10: Placeholder clue for gift 10. Edit this text later!</p>
+                    <button class="found-btn" onclick="event.stopPropagation(); unlockNextCard(10)">Found it! 🎁</button>
+                    <div class="completed-check hidden">✅ Found</div>
+                </div>
+            </div>
+        </div>
+        <!-- Card 11 -->
+        <div class="treasure-card locked" data-card="11" onclick="flipTreasureCard(this)">
+            <div class="treasure-card-inner">
+                <div class="treasure-card-front">
+                    <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=400&auto=format&fit=crop" alt="Clue 11">
+                    <div class="lock-overlay">
+                        <span class="lock-icon">🔒</span>
+                    </div>
+                    <span class="clue-badge">Clue 11</span>
+                </div>
+                <div class="treasure-card-back">
+                    <span class="pin">📌</span>
+                    <p>Clue 11: Placeholder clue for gift 11. Edit this text later!</p>
+                    <button class="found-btn" onclick="event.stopPropagation(); unlockNextCard(11)">Found it! 🎁</button>
+                    <div class="completed-check hidden">✅ Found</div>
+                </div>
+            </div>
+        </div>
+        <!-- Card 12 -->
+        <div class="treasure-card locked" data-card="12" onclick="flipTreasureCard(this)">
+            <div class="treasure-card-inner">
+                <div class="treasure-card-front">
+                    <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=400&auto=format&fit=crop" alt="Clue 12">
+                    <div class="lock-overlay">
+                        <span class="lock-icon">🔒</span>
+                    </div>
+                    <span class="clue-badge">Clue 12</span>
+                </div>
+                <div class="treasure-card-back">
+                    <span class="pin">📌</span>
+                    <p>Clue 12: Placeholder clue for gift 12. Edit this text later!</p>
+                    <button class="found-btn" onclick="event.stopPropagation(); unlockNextCard(12)">Found it! 🎁</button>
+                    <div class="completed-check hidden">✅ Found</div>
+                </div>
+            </div>
+        </div>
+        <!-- Card 13 -->
+        <div class="treasure-card locked" data-card="13" onclick="flipTreasureCard(this)">
+            <div class="treasure-card-inner">
+                <div class="treasure-card-front">
+                    <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=400&auto=format&fit=crop" alt="Clue 13">
+                    <div class="lock-overlay">
+                        <span class="lock-icon">🔒</span>
+                    </div>
+                    <span class="clue-badge">Clue 13</span>
+                </div>
+                <div class="treasure-card-back">
+                    <span class="pin">📌</span>
+                    <p>Clue 13: Placeholder clue for gift 13. Edit this text later!</p>
+                    <button class="found-btn" onclick="event.stopPropagation(); unlockNextCard(13)">Found it! 🎁</button>
+                    <div class="completed-check hidden">✅ Found</div>
+                </div>
+            </div>
+        </div>
+        <!-- Card 14 -->
+        <div class="treasure-card locked" data-card="14" onclick="flipTreasureCard(this)">
+            <div class="treasure-card-inner">
+                <div class="treasure-card-front">
+                    <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=400&auto=format&fit=crop" alt="Clue 14">
+                    <div class="lock-overlay">
+                        <span class="lock-icon">🔒</span>
+                    </div>
+                    <span class="clue-badge">Clue 14</span>
+                </div>
+                <div class="treasure-card-back">
+                    <span class="pin">📌</span>
+                    <p>Clue 14: Placeholder clue for gift 14. Edit this text later!</p>
+                    <button class="found-btn" onclick="event.stopPropagation(); unlockNextCard(14)">Found it! 🎁</button>
+                    <div class="completed-check hidden">✅ Found</div>
+                </div>
+            </div>
+        </div>
+        <!-- Card 15 -->
+        <div class="treasure-card locked" data-card="15" onclick="flipTreasureCard(this)">
+            <div class="treasure-card-inner">
+                <div class="treasure-card-front">
+                    <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=400&auto=format&fit=crop" alt="Clue 15">
+                    <div class="lock-overlay">
+                        <span class="lock-icon">🔒</span>
+                    </div>
+                    <span class="clue-badge">Clue 15</span>
+                </div>
+                <div class="treasure-card-back">
+                    <span class="pin">📌</span>
+                    <p>Clue 15: Placeholder clue for gift 15. Edit this text later!</p>
+                    <button class="found-btn" onclick="event.stopPropagation(); unlockNextCard(15)">Found it! 🎁</button>
+                    <div class="completed-check hidden">✅ Found</div>
+                </div>
+            </div>
+        </div>
+        <!-- Card 16 -->
+        <div class="treasure-card locked" data-card="16" onclick="flipTreasureCard(this)">
+            <div class="treasure-card-inner">
+                <div class="treasure-card-front">
+                    <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=400&auto=format&fit=crop" alt="Clue 16">
+                    <div class="lock-overlay">
+                        <span class="lock-icon">🔒</span>
+                    </div>
+                    <span class="clue-badge">Clue 16</span>
+                </div>
+                <div class="treasure-card-back">
+                    <span class="pin">📌</span>
+                    <p>Clue 16: Placeholder clue for gift 16. Edit this text later!</p>
+                    <button class="found-btn" onclick="event.stopPropagation(); unlockNextCard(16)">Found it! 🎁</button>
+                    <div class="completed-check hidden">✅ Found</div>
+                </div>
+            </div>
+        </div>
+        <!-- Card 17 -->
+        <div class="treasure-card locked" data-card="17" onclick="flipTreasureCard(this)">
+            <div class="treasure-card-inner">
+                <div class="treasure-card-front">
+                    <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=400&auto=format&fit=crop" alt="Clue 17">
+                    <div class="lock-overlay">
+                        <span class="lock-icon">🔒</span>
+                    </div>
+                    <span class="clue-badge">Clue 17</span>
+                </div>
+                <div class="treasure-card-back">
+                    <span class="pin">📌</span>
+                    <p>Clue 17: Placeholder clue for gift 17. Edit this text later!</p>
+                    <button class="found-btn" onclick="event.stopPropagation(); unlockNextCard(17)">Found it! 🎁</button>
+                    <div class="completed-check hidden">✅ Found</div>
+                </div>
+            </div>
+        </div>
+        <!-- Card 18 -->
+        <div class="treasure-card locked" data-card="18" onclick="flipTreasureCard(this)">
+            <div class="treasure-card-inner">
+                <div class="treasure-card-front">
+                    <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=400&auto=format&fit=crop" alt="Clue 18">
+                    <div class="lock-overlay">
+                        <span class="lock-icon">🔒</span>
+                    </div>
+                    <span class="clue-badge">Clue 18</span>
+                </div>
+                <div class="treasure-card-back">
+                    <span class="pin">📌</span>
+                    <p>Clue 18: Placeholder clue for gift 18. Edit this text later!</p>
+                    <button class="found-btn" onclick="event.stopPropagation(); unlockNextCard(18)">Found it! 🎁</button>
+                    <div class="completed-check hidden">✅ Found</div>
+                </div>
+            </div>
+        </div>
+        <!-- Card 19 -->
+        <div class="treasure-card locked" data-card="19" onclick="flipTreasureCard(this)">
+            <div class="treasure-card-inner">
+                <div class="treasure-card-front">
+                    <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=400&auto=format&fit=crop" alt="Clue 19">
+                    <div class="lock-overlay">
+                        <span class="lock-icon">🔒</span>
+                    </div>
+                    <span class="clue-badge">Clue 19</span>
+                </div>
+                <div class="treasure-card-back">
+                    <span class="pin">📌</span>
+                    <p>Clue 19: Placeholder clue for gift 19. Edit this text later!</p>
+                    <button class="found-btn" onclick="event.stopPropagation(); unlockNextCard(19)">Found it! 🎁</button>
+                    <div class="completed-check hidden">✅ Found</div>
+                </div>
+            </div>
+        </div>
+        <!-- Card 20 -->
+        <div class="treasure-card locked" data-card="20" onclick="flipTreasureCard(this)">
+            <div class="treasure-card-inner">
+                <div class="treasure-card-front">
+                    <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=400&auto=format&fit=crop" alt="Clue 20">
+                    <div class="lock-overlay">
+                        <span class="lock-icon">🔒</span>
+                    </div>
+                    <span class="clue-badge">Clue 20</span>
+                </div>
+                <div class="treasure-card-back">
+                    <span class="pin">📌</span>
+                    <p>Clue 20: Placeholder clue for gift 20. Edit this text later!</p>
+                    <button class="found-btn" onclick="event.stopPropagation(); unlockNextCard(20)">Found it! 🎁</button>
+                    <div class="completed-check hidden">✅ Found</div>
+                </div>
+            </div>
+        </div>
+        <!-- Card 21 -->
+        <div class="treasure-card locked" data-card="21" onclick="flipTreasureCard(this)">
+            <div class="treasure-card-inner">
+                <div class="treasure-card-front">
+                    <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=400&auto=format&fit=crop" alt="Clue 21">
+                    <div class="lock-overlay">
+                        <span class="lock-icon">🔒</span>
+                    </div>
+                    <span class="clue-badge">Clue 21</span>
+                </div>
+                <div class="treasure-card-back">
+                    <span class="pin">📌</span>
+                    <p>Clue 21: Placeholder clue for gift 21. Edit this text later!</p>
+                    <button class="found-btn" onclick="event.stopPropagation(); unlockNextCard(21)">Found it! 🎁</button>
+                    <div class="completed-check hidden">✅ Found</div>
+                </div>
+            </div>
+        </div>
+        <!-- Card 22 -->
+        <div class="treasure-card locked" data-card="22" onclick="flipTreasureCard(this)">
+            <div class="treasure-card-inner">
+                <div class="treasure-card-front">
+                    <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=400&auto=format&fit=crop" alt="Clue 22">
+                    <div class="lock-overlay">
+                        <span class="lock-icon">🔒</span>
+                    </div>
+                    <span class="clue-badge">Clue 22</span>
+                </div>
+                <div class="treasure-card-back">
+                    <span class="pin">📌</span>
+                    <p>Clue 22: Placeholder clue for gift 22. Edit this text later!</p>
+                    <button class="found-btn" onclick="event.stopPropagation(); unlockNextCard(22)">Found it! 🎁</button>
+                    <div class="completed-check hidden">✅ Found</div>
+                </div>
+            </div>
+        </div>
+        <!-- Card 23 -->
+        <div class="treasure-card locked" data-card="23" onclick="flipTreasureCard(this)">
+            <div class="treasure-card-inner">
+                <div class="treasure-card-front">
+                    <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=400&auto=format&fit=crop" alt="Clue 23">
+                    <div class="lock-overlay">
+                        <span class="lock-icon">🔒</span>
+                        <span class="lock-date-hint">Aug 31 · 12:00 AM</span>
+                    </div>
+                    <span class="clue-badge">Clue 23</span>
+                </div>
+                <div class="treasure-card-back" style="padding-top: 25px;">
+                    <span class="pin">📌</span>
+                    <p style="margin-bottom: 15px; font-size: 1.3rem;">Clue 23: Messages from your favorite people! 📹</p>
+                    <button class="album-btn" style="padding: 10px 20px; font-size: 1rem; margin-bottom: 20px; box-shadow: none;" onclick="event.stopPropagation(); openVideoModal()">Open Messages 💌</button>
+                    <button class="found-btn" onclick="event.stopPropagation(); unlockNextCard(23)">Finish Hunt! 🎉</button>
+                    <div class="completed-check hidden">✅ Found</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Celebration Overlay -->
+    <div id="celebration-overlay" class="hidden">
+        <div class="celebration-content">
+            <h2>You Found Them All! 🎉</h2>
+            <p>Happy 23rd Birthday!</p>
+            <div class="flower-icon">🌸</div>
+            <button class="album-btn" onclick="document.getElementById('celebration-overlay').classList.add('hidden')" style="margin-top: 20px;">Close</button>
+        </div>
+    </div>
+
+    <!-- Video Stacked Modal -->
+    <div id="video-modal" class="hidden">
+        <div class="video-modal-content">
+            <button class="close-modal-btn" onclick="closeVideoModal()">✖</button>
+            <h2 style="font-family: 'Caveat', cursive; color: var(--accent-orange); font-size: 2.2rem; margin-bottom: 20px;">messages from the gang ✿</h2>
+            <div class="video-stack-container" id="video-stack-container">
+                <!-- Dynamically populated from videos folder -->
+            </div>
+            <div class="video-nav-btns" style="display: flex; align-items: center; justify-content: center; gap: 15px;">
+                <button onclick="prevVideo()" id="prev-vid-btn" disabled>← Previous</button>
+                <span id="video-counter" style="color: var(--text-main); font-family: 'Outfit', sans-serif; font-weight: 600; font-size: 1.1rem; min-width: 60px; text-align: center;">1 / 1</span>
+                <button onclick="nextVideo()" id="next-vid-btn">Next →</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="videos/videos.js"></script>
+    <script src="content.js"></script>
+    <script src="script.js"></script>
+    <script>
+        // Inline script for Treasure Hunt logic specific to this page
+        document.addEventListener('DOMContentLoaded', () => {
+            initTreasureHunt();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday!</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Intro Envelope Screen -->
+    <div id="intro-screen">
+        <div class="envelope-container" onclick="openEnvelope()">
+            <div class="envelope">
+                <div class="flap"></div>
+                <div class="letter">
+                    <p>Hey You!</p>
+                    <p>I made a little something just for you...</p>
+                    <p class="highlight">happy birthday ✿</p>
+                </div>
+                <div class="stamp">HAPPY BIRTHDAY</div>
+                <div class="heart-seal">🧡</div>
+            </div>
+        </div>
+        <p class="tap-text">TAP ENVELOPE TO BEGIN</p>
+    </div>
+
+    <!-- Main Content Screen -->
+    <div id="main-content" class="hidden">
+        <header>
+            <span class="sparkle">✦</span> <span class="header-title">HAPPY BIRTHDAY</span>
+            <h1>To My Favourite Person</h1>
+            <div class="badge">to the best one ✿</div>
+        </header>
+
+        <section class="countdown-section">
+            <p class="countdown-label">her special day arrives in</p>
+            <div class="countdown-timer" id="countdown-timer">
+                <div class="countdown-unit">
+                    <span id="cd-days" class="countdown-num">00</span>
+                    <span class="countdown-text">days</span>
+                </div>
+                <div class="countdown-separator">:</div>
+                <div class="countdown-unit">
+                    <span id="cd-hours" class="countdown-num">00</span>
+                    <span class="countdown-text">hours</span>
+                </div>
+                <div class="countdown-separator">:</div>
+                <div class="countdown-unit">
+                    <span id="cd-minutes" class="countdown-num">00</span>
+                    <span class="countdown-text">minutes</span>
+                </div>
+                <div class="countdown-separator">:</div>
+                <div class="countdown-unit">
+                    <span id="cd-seconds" class="countdown-num">00</span>
+                    <span class="countdown-text">seconds</span>
+                </div>
+            </div>
+            <p class="countdown-date">august 31 ✨</p>
+        </section>
+
+        <section class="main-image-container">
+            <div class="polaroid">
+                <!-- User's image will go here, using a placeholder for now -->
+                <img decoding="async" src="homepage/big%20image%20in%20landing.jpg" alt="Us" id="main-us-img">
+            </div>
+        </section>
+
+        <section class="message-card">
+            <p>Every year this day comes around and I think the same thing: I got so lucky with you. So instead of a text this time, I built you a tiny corner of the internet. Stay a while, there's a bit to see.</p>
+            <div class="flower-icon">🌸</div>
+        </section>
+
+        <section class="music-player">
+            <div class="album-art">
+                <img decoding="async" src="homepage/IMG_5162.jpg" alt="Album Art">
+            </div>
+            <div class="song-info">
+                <p class="now-playing">NOW PLAYING</p>
+                <h3>Eppadi Vandhaayo</h3>
+                <p class="artist"></p>
+            </div>
+            <div class="player-controls">
+                <button class="play-btn" id="play-btn">▶</button>
+                <div class="progress-bar" id="progress-container">
+                    <div class="progress" id="progress-bar" style="width: 0%"></div>
+                </div>
+                <span class="time" id="time-display">0:00 / 0:00</span>
+            </div>
+        </section>
+
+        <p class="instruction-text">✿ press play — this one is permanently attached to memories of you.</p>
+
+        <section class="flip-cards-section">
+            <h2>flip one over</h2>
+            <p class="sub-instruction">every photo has something written on the back ✿</p>
+            
+            <div class="grid-container">
+                <!-- Card 1 -->
+                <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <img decoding="async" src="homepage/flip1.JPG" alt="Photo 1">
+                            <span class="pin">📌</span>
+                            <span class="small-flower">✿</span>
+                        </div>
+                        <div class="flip-card-back">
+                            <span class="pin">📌</span>
+                            <p>Riyaayini is a neat child.She is able to diffrentiate between Tall/Short</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 2 -->
+                <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <img decoding="async" src="homepage/flip-2.jpg" alt="Photo 2">
+                            <span class="pin">📌</span>
+                            <span class="small-flower">✿</span>
+                        </div>
+                        <div class="flip-card-back">
+                            <span class="pin">📌</span>
+                            <p>Still you look like little baby through my eyes</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 3 -->
+                <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <img decoding="async" src="homepage/flip-3.JPG" alt="Photo 3">
+                            <span class="pin">📌</span>
+                            <span class="small-flower">✿</span>
+                        </div>
+                        <div class="flip-card-back">
+                            <span class="pin">📌</span>
+                            <p>Bettu's memorable day.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 4 -->
+                <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <img decoding="async" src="homepage/flip4.jpg" alt="Photo 4">
+                            <span class="pin">📌</span>
+                            <span class="small-flower">✿</span>
+                        </div>
+                        <div class="flip-card-back">
+                            <span class="pin">📌</span>
+                            <p>The picture on which i admired u a lot</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 5 -->
+                <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <img decoding="async" src="homepage/IMG_5162.jpg" alt="Photo 5">
+                            <span class="pin">📌</span>
+                            <span class="small-flower">✿</span>
+                        </div>
+                        <div class="flip-card-back">
+                            <span class="pin">📌</span>
+                            <p>Memorable trip with memorable person</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 6 -->
+                <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <img decoding="async" src="homepage/flip6.JPG" alt="Photo 6">
+                            <span class="pin">📌</span>
+                            <span class="small-flower">✿</span>
+                        </div>
+                        <div class="flip-card-back">
+                            <span class="pin">📌</span>
+                            <p>Taken on One of the best day of my life</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="reasons-section">
+            <h2>things i love about you ✿</h2>
+            <div class="slot-machine-container">
+                <div class="slot-window">
+                    <p id="reason-text">Click the button to spin!</p>
+                </div>
+                <button id="spin-btn" class="spin-btn" onclick="spinReasons()">Tell me something sweet 🎰</button>
+            </div>
+        </section>
+
+        <section class="love-letter-section">
+            <div class="parchment">
+                <h2>a letter for you 📜</h2>
+                <p id="love-letter-text" data-text="From the day I met you until now, my life has changed in the most beautiful ways. You walked in and everything just made sense. Every laugh we’ve shared, every late-night conversation, and even every silly argument—I wouldn’t trade a single second of it. You are my favorite person, my best friend, and the reason I smile every single day. Happy 23rd birthday, my love. Here’s to a lifetime more of us. ❤️">
+                </p>
+                <span class="letter-signature">— yours, always Ajjuuu ♡</span>
+            </div>
+        </section>
+
+        <section class="nav-hub">
+            <h2>explore more ✿</h2>
+            <div class="nav-hub-grid">
+                <a href="album.html" class="nav-card">
+                    <span class="nav-icon">🎮</span>
+                    <span class="nav-title">treasure hunt</span>
+                    <span class="nav-desc">23 clues, 23 gifts</span>
+                </a>
+                <a href="gallery.html" class="nav-card">
+                    <span class="nav-icon">🫧</span>
+                    <span class="nav-title">Your memories</span>
+                    <span class="nav-desc">photos that float like dreams</span>
+                </a>
+                <a href="mosaic.html" class="nav-card">
+                    <span class="nav-icon">💜</span>
+                    <span class="nav-title">Our space</span>
+                    <span class="nav-desc">see the bigger picture</span>
+                </a>
+                <a href="cake.html" class="nav-card">
+                    <span class="nav-icon">🎂</span>
+                    <span class="nav-title">make a wish</span>
+                    <span class="nav-desc">blow out 23 candles</span>
+                </a>
+            </div>
+        </section>
+    </div>
+
+    <div id="floating-hearts"></div>
+    <audio id="bg-music" src="assets/Eppadi%20Vandhaayo%20-%20Chinmayi%2C%20Anand%20Aravindakshan%20-%20MassTamilan.mp3" preload="metadata"></audio>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="content.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

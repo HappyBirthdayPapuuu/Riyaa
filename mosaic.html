@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Mosaic Heart 💜</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Outfit:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+    <style>
+        .mosaic-body {
+            background: radial-gradient(circle at 50% 30%, #fff2f7 0%, #ffe1ee 60%, #ffd4e5 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-bottom: 50px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .mosaic-header {
+            text-align: center;
+            margin-top: 35px;
+            margin-bottom: 25px;
+            z-index: 10;
+        }
+
+        .mosaic-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: #6c234a;
+            text-shadow: 0 2px 10px rgba(224, 94, 150, 0.25);
+            margin-bottom: 4px;
+        }
+
+        .mosaic-subtitle {
+            font-family: 'Caveat', cursive;
+            font-size: 1.6rem;
+            color: #a35b7f;
+            letter-spacing: 0.5px;
+        }
+
+        .mosaic-wrapper {
+            display: flex;
+            justify-content: center;
+            padding: 10px 20px 40px;
+            filter: drop-shadow(0 18px 40px rgba(224, 94, 150, 0.4));
+            transition: transform 0.3s ease;
+        }
+
+        .mosaic-wrapper:hover {
+            transform: scale(1.015);
+        }
+
+        .mosaic-heart-container {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            max-width: 530px;
+            aspect-ratio: 1;
+            clip-path: url(#heart-clip);
+            -webkit-clip-path: url(#heart-clip);
+            background: linear-gradient(135deg, #ff9bb7 0%, #e05e96 50%, #c92a63 100%);
+            padding: 0;
+        }
+
+        .mosaic-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            grid-template-rows: repeat(6, 1fr);
+            width: 100%;
+            height: 100%;
+            gap: 1.5px;
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .mosaic-tile {
+            position: relative;
+            overflow: hidden;
+            background: #ffe6f0;
+            cursor: pointer;
+            transition: filter 0.25s ease;
+        }
+
+        .mosaic-tile img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.35s ease, filter 0.35s ease;
+            display: block;
+        }
+
+        .mosaic-tile:hover img {
+            transform: scale(1.2);
+            filter: brightness(1.1) saturate(1.15);
+        }
+
+        /* ── Modern Frosted Glass Overlay ── */
+        #mosaic-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            background: rgba(18, 5, 22, 0.85);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            animation: overlayFadeIn 0.25s ease-out;
+        }
+
+        #mosaic-overlay.hidden {
+            display: none !important;
+        }
+
+        .mosaic-overlay-content {
+            background: rgba(255, 255, 255, 0.96);
+            padding: 22px 26px 22px;
+            border-radius: 26px;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 179, 198, 0.5);
+            max-width: 90vw;
+            max-height: 88vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: overlayZoomIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+        }
+
+        .mosaic-overlay-content img {
+            max-width: 82vw;
+            max-height: 68vh;
+            border-radius: 16px;
+            object-fit: contain;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.18);
+            display: block;
+        }
+
+        .mosaic-overlay-caption {
+            font-family: 'Caveat', cursive;
+            font-size: 2.1rem;
+            color: #6c234a;
+            margin-top: 14px;
+            margin-bottom: 0;
+            text-align: center;
+            font-weight: 700;
+            line-height: 1.2;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        .mosaic-close-btn {
+            position: absolute;
+            top: 24px;
+            right: 28px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+            transition: transform 0.2s, background 0.2s;
+            z-index: 1010;
+        }
+
+        .mosaic-close-btn:hover {
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        @keyframes overlayFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes overlayZoomIn {
+            from { transform: scale(0.85); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        @media (max-width: 600px) {
+            .mosaic-title { font-size: 2.2rem; }
+            .mosaic-subtitle { font-size: 1.3rem; }
+            .mosaic-heart-container { max-width: 90vw; }
+            .mosaic-overlay-caption { font-size: 1.6rem; }
+            .mosaic-overlay-content { padding: 16px 16px 18px; }
+        }
+    </style>
+</head>
+<body class="mosaic-body">
+    <a href="index.html?skipIntro=true" class="back-btn">← back home</a>
+
+    <div class="mosaic-header">
+        <h1 class="mosaic-title">every piece is you 💜</h1>
+        <p class="mosaic-subtitle">tap any piece of the heart ✿</p>
+    </div>
+
+    <div class="mosaic-wrapper">
+        <svg width="0" height="0">
+            <defs>
+                <clipPath id="heart-clip" clipPathUnits="objectBoundingBox">
+                    <path d="M0.5,1 C 0.5,1 0,0.6 0,0.3 C 0,0.1 0.2,0 0.35,0 C 0.45,0 0.5,0.1 0.5,0.1 C 0.5,0.1 0.55,0 0.65,0 C 0.8,0 1,0.1 1,0.3 C 1,0.6 0.5,1 0.5,1 Z"></path>
+                </clipPath>
+            </defs>
+        </svg>
+
+        <div class="mosaic-heart-container">
+            <div class="mosaic-grid">
+                <!-- 36 Photo Mosaic Tiles with Sweet Captions -->
+                <div class="mosaic-tile" data-caption="you looked so effortlessly beautiful here ✿"><img decoding="async" src="photomosaic/20319313-3e1a-4c72-bc99-ffd57345417c.JPG" alt="tile 1"></div>
+                <div class="mosaic-tile" data-caption="the smile that lights up my whole world ✨"><img decoding="async" src="photomosaic/F7CB9BD0-C80C-4EDD-B7BC-43591A6CEAE3.JPG" alt="tile 2"></div>
+                <div class="mosaic-tile" data-caption="every piece of my heart belongs to you 💜"><img decoding="async" src="photomosaic/IMG_0665.JPG" alt="tile 3"></div>
+                <div class="mosaic-tile" data-caption="my absolute favorite view in the universe ♡"><img decoding="async" src="photomosaic/IMG_0684.JPG" alt="tile 4"></div>
+                <div class="mosaic-tile" data-caption="laughing with you is my favorite thing to do 💫"><img decoding="async" src="photomosaic/IMG_2215.JPG" alt="tile 5"></div>
+                <div class="mosaic-tile" data-caption="pure happiness captured in a single second ☀️"><img decoding="async" src="photomosaic/IMG_2215%202.JPG" alt="tile 6"></div>
+
+                <div class="mosaic-tile" data-caption="you make every ordinary day feel magical 🌸"><img decoding="async" src="photomosaic/IMG_3846.JPG" alt="tile 7"></div>
+                <div class="mosaic-tile" data-caption="looking at you and knowing I got so lucky 🧡"><img decoding="async" src="photomosaic/IMG_4137.JPG" alt="tile 8"></div>
+                <div class="mosaic-tile" data-caption="forever my favorite person, always and forever 💕"><img decoding="async" src="photomosaic/IMG_4241.JPG" alt="tile 9"></div>
+                <div class="mosaic-tile" data-caption="the prettiest girl in every single room 🌷"><img decoding="async" src="photomosaic/IMG_4276.JPG" alt="tile 10"></div>
+                <div class="mosaic-tile" data-caption="this memory lives in my heart rent-free 🌿"><img decoding="async" src="photomosaic/IMG_4965.JPG" alt="tile 11"></div>
+                <div class="mosaic-tile" data-caption="holding on to every little moment with you 💖"><img decoding="async" src="photomosaic/IMG_5076.JPG" alt="tile 12"></div>
+
+                <div class="mosaic-tile" data-caption="with you, everything just feels right ♡"><img decoding="async" src="photomosaic/View%20recent%20photos.png" alt="tile 13"></div>
+                <div class="mosaic-tile" data-caption="sunshine, sweet laughs, and you ☀️"><img decoding="async" src="photomosaic/cb676897-6883-48eb-b723-a9942ccf67ae.JPG" alt="tile 14"></div>
+                <div class="mosaic-tile" data-caption="you looked so effortlessly beautiful here ✿"><img decoding="async" src="photomosaic/20319313-3e1a-4c72-bc99-ffd57345417c.JPG" alt="tile 15"></div>
+                <div class="mosaic-tile" data-caption="the prettiest smile I have ever seen ✨"><img decoding="async" src="photomosaic/F7CB9BD0-C80C-4EDD-B7BC-43591A6CEAE3.JPG" alt="tile 16"></div>
+                <div class="mosaic-tile" data-caption="you make life so much sweeter 🍯"><img decoding="async" src="photomosaic/IMG_0665.JPG" alt="tile 17"></div>
+                <div class="mosaic-tile" data-caption="forever grateful for moments like this ♡"><img decoding="async" src="photomosaic/IMG_0684.JPG" alt="tile 18"></div>
+
+                <div class="mosaic-tile" data-caption="my heart is happiest right next to you 🌸"><img decoding="async" src="photomosaic/IMG_2215.JPG" alt="tile 19"></div>
+                <div class="mosaic-tile" data-caption="laughing until our cheeks hurt 💫"><img decoding="async" src="photomosaic/IMG_2215%202.JPG" alt="tile 20"></div>
+                <div class="mosaic-tile" data-caption="a memory I will hold close forever 💜"><img decoding="async" src="photomosaic/IMG_3846.JPG" alt="tile 21"></div>
+                <div class="mosaic-tile" data-caption="effortlessly gorgeous in every way ✿"><img decoding="async" src="photomosaic/IMG_4137.JPG" alt="tile 22"></div>
+                <div class="mosaic-tile" data-caption="adventures with you are my favorite 🗺️"><img decoding="async" src="photomosaic/IMG_4241.JPG" alt="tile 23"></div>
+                <div class="mosaic-tile" data-caption="you bring so much light into my life ☀️"><img decoding="async" src="photomosaic/IMG_4276.JPG" alt="tile 24"></div>
+
+                <div class="mosaic-tile" data-caption="every little second with you is special 💖"><img decoding="async" src="photomosaic/IMG_4965.JPG" alt="tile 25"></div>
+                <div class="mosaic-tile" data-caption="the best person to do life with 🌷"><img decoding="async" src="photomosaic/IMG_5076.JPG" alt="tile 26"></div>
+                <div class="mosaic-tile" data-caption="memories that always make me smile 😊"><img decoding="async" src="photomosaic/View%20recent%20photos.png" alt="tile 27"></div>
+                <div class="mosaic-tile" data-caption="you are my favorite part of every day 🧡"><img decoding="async" src="photomosaic/cb676897-6883-48eb-b723-a9942ccf67ae.JPG" alt="tile 28"></div>
+                <div class="mosaic-tile" data-caption="you looked so effortlessly beautiful here ✿"><img decoding="async" src="photomosaic/20319313-3e1a-4c72-bc99-ffd57345417c.JPG" alt="tile 29"></div>
+                <div class="mosaic-tile" data-caption="always and forever my favorite person ♡"><img decoding="async" src="photomosaic/F7CB9BD0-C80C-4EDD-B7BC-43591A6CEAE3.JPG" alt="tile 30"></div>
+
+                <div class="mosaic-tile" data-caption="the world is better with you in it 🌸"><img decoding="async" src="photomosaic/IMG_0665.JPG" alt="tile 31"></div>
+                <div class="mosaic-tile" data-caption="my whole heart in one photo 💜"><img decoding="async" src="photomosaic/IMG_0684.JPG" alt="tile 32"></div>
+                <div class="mosaic-tile" data-caption="smiling because of you ✨"><img decoding="async" src="photomosaic/IMG_2215.JPG" alt="tile 33"></div>
+                <div class="mosaic-tile" data-caption="never stop shining your light 🌟"><img decoding="async" src="photomosaic/IMG_3846.JPG" alt="tile 34"></div>
+                <div class="mosaic-tile" data-caption="so lucky to call you mine 💕"><img decoding="async" src="photomosaic/IMG_4241.JPG" alt="tile 35"></div>
+                <div class="mosaic-tile" data-caption="forever and always, my love ♡"><img decoding="async" src="photomosaic/cb676897-6883-48eb-b723-a9942ccf67ae.JPG" alt="tile 36"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Zoom Overlay with Caption -->
+    <div id="mosaic-overlay" class="hidden" onclick="closeMosaicOverlay()">
+        <button class="mosaic-close-btn" onclick="closeMosaicOverlay()">✕</button>
+        <div class="mosaic-overlay-content" onclick="event.stopPropagation()">
+            <img decoding="async" id="mosaic-overlay-img" src="" alt="Zoomed tile">
+            <p id="mosaic-overlay-caption" class="mosaic-overlay-caption"></p>
+        </div>
+    </div>
+
+    <script src="content.js"></script>
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', initMosaic);
+    </script>
+</body>
+</html>

@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Papuu!! 🎂✨</title>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Outfit:wght@300;400;600;800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+        font-family: 'Outfit', sans-serif;
+        background: radial-gradient(ellipse at 50% 30%, #15002b 0%, #080014 60%, #030008 100%);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        color: #fff;
+    }
+
+    /* ── Stars ── */
+    .stars-layer {
+        position: fixed; inset: 0; pointer-events: none; z-index: 0;
+        background:
+            radial-gradient(1.5px 1.5px at  6%  8%, rgba(255,255,255,.9) 0%, transparent 100%),
+            radial-gradient(1px   1px   at 18% 20%, rgba(255,240,180,.8) 0%, transparent 100%),
+            radial-gradient(1px   1px   at 32% 52%, rgba(255,255,255,.5) 0%, transparent 100%),
+            radial-gradient(2px   2px   at 47%  5%, rgba(255,220,120,.8) 0%, transparent 100%),
+            radial-gradient(1px   1px   at 59% 35%, rgba(255,255,255,.6) 0%, transparent 100%),
+            radial-gradient(1.5px 1.5px at 73% 16%, rgba(220,180,255,.7) 0%, transparent 100%),
+            radial-gradient(1px   1px   at 84% 70%, rgba(255,255,255,.5) 0%, transparent 100%),
+            radial-gradient(1px   1px   at 26% 78%, rgba(255,255,255,.4) 0%, transparent 100%),
+            radial-gradient(2px   2px   at 91%  4%, rgba(255,240,180,.6) 0%, transparent 100%),
+            radial-gradient(1px   1px   at 54% 86%, rgba(180,200,255,.5) 0%, transparent 100%),
+            radial-gradient(1px   1px   at 10% 61%, rgba(255,255,255,.4) 0%, transparent 100%),
+            radial-gradient(1.5px 1.5px at 67% 48%, rgba(255,220,120,.5) 0%, transparent 100%),
+            radial-gradient(1px   1px   at 39% 92%, rgba(255,255,255,.5) 0%, transparent 100%),
+            radial-gradient(1px   1px   at 81% 40%, rgba(220,180,255,.4) 0%, transparent 100%);
+        animation: twinkle 4s ease-in-out infinite alternate;
+    }
+    @keyframes twinkle { 0%{opacity:.6} 50%{opacity:1} 100%{opacity:.7} }
+
+    /* ── Floating Glitter ── */
+    .glitter-wrap { position: fixed; inset: 0; pointer-events: none; z-index: 1; overflow: hidden; }
+    .glitter {
+        position: absolute; border-radius: 50%; opacity: 0;
+        animation: floatUp linear infinite;
+    }
+    @keyframes floatUp {
+        0%   { transform: translateY(100vh) scale(0); opacity: 0; }
+        10%  { opacity: .9; }
+        90%  { opacity: .6; }
+        100% { transform: translateY(-5vh) scale(1.5); opacity: 0; }
+    }
+
+    /* ── Back button ── */
+    .back-btn {
+        position: fixed; top: 20px; left: 20px;
+        text-decoration: none; color: #d4a4ff; font-weight: 600; font-size: .95rem;
+        background: rgba(255,255,255,.08); backdrop-filter: blur(8px);
+        padding: 8px 16px; border-radius: 20px;
+        border: 1px solid rgba(255,255,255,.15); z-index: 3000;
+        transition: transform .2s, background .2s;
+    }
+    .back-btn:hover { transform: translateX(-3px); background: rgba(255,255,255,.16); }
+
+    /* ════════════════════════════════════
+       SVG CURTAINS
+    ════════════════════════════════════ */
+    .curtain-svg {
+        position: fixed; inset: 0; width: 100%; height: 100%;
+        pointer-events: none; z-index: 1000;
+    }
+    #curtain-left-svg  { transition: transform 1.5s cubic-bezier(0.77, 0, 0.175, 1); }
+    #curtain-right-svg { transition: transform 1.5s cubic-bezier(0.77, 0, 0.175, 1); }
+    #curtain-left-svg.open  { transform: translateX(-100%); }
+    #curtain-right-svg.open { transform: translateX(100%); }
+
+    .pelmet-svg {
+        position: fixed; top: 0; left: 0; width: 100%; height: 80px;
+        pointer-events: none; z-index: 1002;
+        transition: opacity 1.4s ease;
+    }
+    .pelmet-svg.hide { opacity: 0; }
+
+    /* ════════════════════════════════════
+       SCENE & CAKE
+    ════════════════════════════════════ */
+    .scene {
+        position: relative; z-index: 5;
+        display: flex; flex-direction: column;
+        align-items: center; gap: 0;
+    }
+
+    .phase-label {
+        font-family: 'Playfair Display', serif; font-style: italic;
+        font-size: 1.25rem; color: rgba(212,164,255,.95);
+        letter-spacing: 2px; min-height: 1.8rem;
+        transition: opacity .5s; text-align: center;
+        margin-bottom: 12px; text-shadow: 0 0 20px rgba(200,140,255,.5);
+    }
+
+    .cake-wrap {
+        position: relative; width: 440px;
+        display: flex; flex-direction: column;
+        align-items: center; overflow: visible;
+    }
+
+    /* Ambient Warm Glow behind the Cake */
+    .cake-ambient-glow {
+        position: absolute;
+        top: 20px; left: 50%; transform: translateX(-50%);
+        width: 320px; height: 260px;
+        background: radial-gradient(ellipse at center, rgba(255, 180, 70, 0.25) 0%, rgba(220, 80, 160, 0.12) 50%, transparent 70%);
+        border-radius: 50%; pointer-events: none; z-index: 1;
+        transition: opacity 0.8s ease;
+    }
+
+    .number-stage {
+        display: flex; align-items: flex-end;
+        justify-content: center; gap: 0;
+        height: 95px; position: relative;
+        z-index: 10; width: 100%;
+        margin-bottom: -16px;
+    }
+
+    .digit-slot {
+        display: flex; flex-direction: column; align-items: center;
+        overflow: visible;
+        transition: width .95s cubic-bezier(.4,0,.2,1), opacity .85s ease, margin .95s cubic-bezier(.4,0,.2,1);
+        position: relative;
+    }
+
+    .digit-num {
+        font-family: 'Outfit', sans-serif; font-weight: 800;
+        font-size: 52px; line-height: 1; color: #ffd700;
+        text-shadow: 0 2px 10px rgba(255, 180, 0, 0.4);
+        transition: color .8s, text-shadow .8s;
+        user-select: none; white-space: nowrap;
+        background: none;
+    }
+    .digit-slot.dimming .digit-num { color: #3a3a48; text-shadow: none; }
+    .digit-slot.ignited .digit-num {
+        color: #fff8d0;
+        text-shadow:
+            0 0 10px #ffd700,
+            0 0 24px #ff9500,
+            0 0 45px rgba(255, 80, 0, 0.6);
+        animation: numPulse 1.5s ease-in-out infinite alternate;
+    }
+    @keyframes numPulse {
+        0%   { text-shadow: 0 0 8px #ffd700, 0 0 20px #ff9500, 0 0 35px rgba(255,80,0,.4); }
+        100% { text-shadow: 0 0 16px #ffe566, 0 0 36px #ffaa00, 0 0 60px rgba(255,80,0,.7); }
+    }
+
+    /* Flames */
+    .flame-area { position: relative; width: 22px; height: 32px; margin-bottom: -2px; transition: opacity .6s; }
+    .f-outer {
+        position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+        width: 14px; height: 26px;
+        background: radial-gradient(ellipse at 50% 85%, #ffffff 0%, #ffe566 25%, #ffb300 55%, #ff6a00 85%, transparent 100%);
+        border-radius: 50% 50% 30% 30% / 60% 60% 40% 40%;
+        box-shadow: 0 0 8px #ffb300, 0 0 16px rgba(255, 106, 0, 0.6);
+        animation: flkr .35s infinite alternate ease-in-out;
+        transform-origin: bottom center;
+    }
+    .f-inner {
+        position: absolute; bottom: 3px; left: 50%; transform: translateX(-50%);
+        width: 6px; height: 13px;
+        background: radial-gradient(ellipse at 50% 85%, #fff 0%, #fffde7 70%, transparent 100%);
+        border-radius: 50% 50% 30% 30% / 60% 60% 40% 40%;
+        animation: flkr .35s infinite alternate-reverse ease-in-out;
+        transform-origin: bottom center;
+    }
+    .digit-slot.ignited .f-outer {
+        width: 18px; height: 32px;
+        box-shadow: 0 0 12px #ffd700, 0 0 24px #ff8c00, 0 0 36px rgba(255, 100, 0, 0.7);
+        animation: flkrBig .35s infinite alternate ease-in-out;
+    }
+    .digit-slot.ignited .f-inner { width: 8px; height: 18px; }
+    .smoke-puff {
+        position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
+        width: 6px; height: 6px; background: rgba(180,180,200,.6);
+        border-radius: 50%; opacity: 0; pointer-events: none;
+    }
+    .digit-slot.blown .smoke-puff { animation: smokeUp 1.2s ease-out forwards; }
+    .digit-slot.blown .flame-area { opacity: 0; }
+    @keyframes smokeUp {
+        0%   { opacity:.7; transform:translateX(-50%) scale(1) translateY(0); }
+        100% { opacity:0;  transform:translateX(-50%) scale(4) translateY(-30px); }
+    }
+    @keyframes flkr {
+        0%   { transform:translateX(-50%) scaleX(1)   scaleY(1)    rotate(-2deg); }
+        50%  { transform:translateX(-50%) scaleX(.9)  scaleY(1.06) rotate(1deg); }
+        100% { transform:translateX(-50%) scaleX(.95) scaleY(1.08) rotate(2deg); }
+    }
+    @keyframes flkrBig {
+        0%   { transform:translateX(-50%) scaleX(1)   scaleY(1)   rotate(-3deg); }
+        50%  { transform:translateX(-50%) scaleX(.88) scaleY(1.1) rotate(2deg); }
+        100% { transform:translateX(-50%) scaleX(1.08) scaleY(.93) rotate(-2deg); }
+    }
+
+    /* Cake layers */
+    .cake-inner { position: relative; width: 100%; z-index: 3; }
+    .top-glow {
+        position: absolute; top: 78px; left: 50%; transform: translateX(-50%);
+        width: 260px; height: 50px;
+        background: radial-gradient(ellipse, rgba(255,180,50,.35) 0%, transparent 70%);
+        border-radius: 50%; pointer-events: none;
+        transition: background .8s, opacity .8s; z-index: 9;
+    }
+    .cake-layer { position: relative; margin: 0 auto; border-radius: 14px 14px 6px 6px; }
+    .layer-1 {
+        width: 260px; height: 72px;
+        background: linear-gradient(135deg, #f9a8d4 0%, #ec4899 55%, #be185d 100%);
+        z-index: 3; display: flex; align-items: center; justify-content: center; overflow: visible;
+        box-shadow: inset 0 4px 10px rgba(255,255,255,.4), inset 0 -10px 14px rgba(0,0,0,.25), 0 10px 24px rgba(0,0,0,.45);
+    }
+    .layer-2 {
+        width: 340px; height: 78px;
+        background: linear-gradient(135deg, #f472b6 0%, #db2777 55%, #9d174d 100%);
+        z-index: 2; margin-top: -8px;
+        box-shadow: inset 0 4px 10px rgba(255,255,255,.3), inset 0 -10px 14px rgba(0,0,0,.2), 0 10px 24px rgba(0,0,0,.45);
+    }
+    .layer-3 {
+        width: 420px; height: 88px;
+        background: linear-gradient(135deg, #ec4899 0%, #9d174d 55%, #6d0d37 100%);
+        z-index: 1; margin-top: -8px;
+        box-shadow: inset 0 4px 10px rgba(255,255,255,.2), inset 0 -10px 14px rgba(0,0,0,.3), 0 10px 24px rgba(0,0,0,.5);
+    }
+    .cake-layer::before {
+        content: ''; position: absolute; top: -1px; left: 0; right: 0; height: 16px;
+        background: linear-gradient(to right, #fff8fb, #ffe4f0, #fff8fb);
+        border-radius: 14px 14px 4px 4px; z-index: 2;
+    }
+    .drip { position: absolute; top: 12px; width: 10px; height: 18px; background: linear-gradient(to bottom, #fff8fb, #ffe4f0); border-radius: 0 0 10px 10px; z-index: 3; }
+    .sp   { position: absolute; width: 5px; height: 5px; border-radius: 50%; top: 22px; z-index: 4; }
+    .cake-text { font-family: 'Caveat', cursive; font-size: 1.05rem; color: white; text-shadow: 0 1px 4px rgba(0,0,0,.4); position: relative; z-index: 5; }
+    .cake-plate { width: 440px; height: 18px; background: linear-gradient(180deg, #e8e8e8, #bdbdbd); border-radius: 50%; margin: -4px auto 0; box-shadow: 0 8px 24px rgba(0,0,0,.65), inset 0 2px 5px rgba(255,255,255,.5); }
+    .plate-shadow { width: 380px; height: 14px; background: radial-gradient(ellipse, rgba(255,100,180,.28) 0%, transparent 70%); margin: 0 auto; }
+
+    /* Reveal / buttons */
+    .reveal-msg { text-align: center; margin-top: 28px; opacity: 0; transform: translateY(16px); transition: opacity .8s, transform .8s; pointer-events: none; }
+    .reveal-msg.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    .reveal-msg h2 { font-family: 'Playfair Display', serif; font-size: 2.1rem; color: #ffd700; text-shadow: 0 0 20px rgba(255,215,0,.6), 0 0 40px rgba(255,140,0,.3); animation: goldenShimmer 3s ease-in-out infinite alternate; }
+    @keyframes goldenShimmer { 0%{text-shadow:0 0 15px rgba(255,215,0,.6),0 0 35px rgba(255,140,0,.3)} 100%{text-shadow:0 0 25px rgba(255,230,0,.9),0 0 55px rgba(255,160,0,.5)} }
+    .reveal-msg p { font-family: 'Caveat', cursive; font-size: 1.45rem; color: #ffb3c6; margin-top: 8px; }
+    .reveal-msg .year-line { font-size: .95rem; color: rgba(212,164,255,.7); letter-spacing: 4px; text-transform: uppercase; margin-top: 10px; }
+    .blow-wrap { margin-top: 18px; opacity: 0; transform: translateY(10px); transition: opacity .6s, transform .6s; }
+    .blow-wrap.show { opacity: 1; transform: translateY(0); }
+    .blow-btn { background: linear-gradient(135deg, #ffd700, #ffaa00); color: #1a0030; border: none; padding: 13px 34px; font-size: 1.05rem; font-weight: 700; border-radius: 30px; cursor: pointer; box-shadow: 0 5px 20px rgba(255,215,0,.4), 0 0 0 3px rgba(255,215,0,.15); transition: transform .3s, box-shadow .3s; font-family: 'Outfit', sans-serif; }
+    .blow-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(255,215,0,.6); }
+    .blow-btn.active-mic { background: linear-gradient(135deg, #ff6b9e, #c92a63); color:#fff; animation: micPulse .8s infinite alternate; }
+    @keyframes micPulse { 0%{transform:scale(1)} 100%{transform:scale(1.04)} }
+    .wish-card { margin-top: 24px; text-align: center; opacity: 0; transform: translateY(14px); transition: opacity .8s, transform .8s; }
+    .wish-card.show { opacity: 1; transform: translateY(0); }
+    .wish-card h3 { font-family: 'Playfair Display', serif; font-size: 1.9rem; color: #ffd700; text-shadow: 0 0 16px rgba(255,215,0,.5); }
+    .wish-card p { font-family: 'Caveat', cursive; font-size: 1.6rem; color: #ffb3c6; margin-top: 6px; }
+
+    @media (max-width: 480px) {
+        .digit-num { font-size: 40px; }
+        .digit-slot { width: 48px !important; }
+        .number-stage { height: 78px; }
+        .layer-1 { width: 210px; } .layer-2 { width: 270px; } .layer-3 { width: 330px; }
+        .cake-wrap { width: 340px; } .cake-plate { width: 350px; }
+        .reveal-msg h2 { font-size: 1.6rem; }
+    }
+    </style>
+</head>
+<body>
+
+<div class="stars-layer"></div>
+<div class="glitter-wrap" id="glitter-wrap"></div>
+
+<!-- ══════════ VELVET CURTAINS (SVG with wavy gathered edges) ══════════ -->
+<!-- LEFT CURTAIN -->
+<svg id="curtain-left-svg" class="curtain-svg" viewBox="0 0 960 900" preserveAspectRatio="xMinYMin slice" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <linearGradient id="velvL" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%"   stop-color="#1a0008"/>
+            <stop offset="6%"   stop-color="#6b0f1e"/>
+            <stop offset="14%"  stop-color="#3d0710"/>
+            <stop offset="22%"  stop-color="#8b1a2e"/>
+            <stop offset="30%"  stop-color="#5c0a1c"/>
+            <stop offset="38%"  stop-color="#9c2235"/>
+            <stop offset="46%"  stop-color="#6b1020"/>
+            <stop offset="54%"  stop-color="#8b1a2e"/>
+            <stop offset="62%"  stop-color="#4a0818"/>
+            <stop offset="70%"  stop-color="#7a1525"/>
+            <stop offset="78%"  stop-color="#3a0610"/>
+            <stop offset="86%"  stop-color="#6b1020"/>
+            <stop offset="93%"  stop-color="#4a0818"/>
+            <stop offset="100%" stop-color="#2a040e"/>
+        </linearGradient>
+        <linearGradient id="sheenL" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%"   stop-color="rgba(255,200,200,0)"/>
+            <stop offset="8%"   stop-color="rgba(255,180,180,.12)"/>
+            <stop offset="16%"  stop-color="rgba(255,200,200,0)"/>
+            <stop offset="24%"  stop-color="rgba(255,180,180,.1)"/>
+            <stop offset="32%"  stop-color="rgba(255,200,200,0)"/>
+            <stop offset="40%"  stop-color="rgba(255,180,180,.08)"/>
+            <stop offset="50%"  stop-color="rgba(255,200,200,0)"/>
+            <stop offset="60%"  stop-color="rgba(255,180,180,.1)"/>
+            <stop offset="70%"  stop-color="rgba(255,200,200,0)"/>
+            <stop offset="80%"  stop-color="rgba(255,180,180,.08)"/>
+            <stop offset="90%"  stop-color="rgba(255,200,200,0)"/>
+            <stop offset="100%" stop-color="rgba(255,180,180,.06)"/>
+        </linearGradient>
+        <linearGradient id="goldFringe" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"   stop-color="#f5c842"/>
+            <stop offset="40%"  stop-color="#d4a017"/>
+            <stop offset="100%" stop-color="#8b6914"/>
+        </linearGradient>
+        <clipPath id="leftClip">
+            <path d="
+                M0,0 H910
+                C895,45  920,90  900,135
+                C880,180 908,225 888,270
+                C868,315 900,360 878,405
+                C856,450 892,495 870,540
+                C848,585 886,630 862,675
+                C838,720 878,765 852,810
+                C840,840 855,870 848,900
+                L0,900 Z
+            "/>
+        </clipPath>
+    </defs>
+    <g clip-path="url(#leftClip)">
+        <rect width="960" height="900" fill="url(#velvL)"/>
+        <rect width="960" height="900" fill="url(#sheenL)"/>
+    </g>
+    <path d="
+        M910,0
+        C895,45  920,90  900,135
+        C880,180 908,225 888,270
+        C868,315 900,360 878,405
+        C856,450 892,495 870,540
+        C848,585 886,630 862,675
+        C838,720 878,765 852,810
+        C840,840 855,870 848,900"
+        fill="none" stroke="url(#goldFringe)" stroke-width="5" opacity="0.9"/>
+    <path d="
+        M910,0
+        C895,45  920,90  900,135
+        C880,180 908,225 888,270
+        C868,315 900,360 878,405
+        C856,450 892,495 870,540
+        C848,585 886,630 862,675
+        C838,720 878,765 852,810
+        C840,840 855,870 848,900"
+        fill="none" stroke="#f5c842" stroke-width="2"
+        stroke-dasharray="8,14" opacity="0.7"/>
+</svg>
+
+<!-- RIGHT CURTAIN -->
+<svg id="curtain-right-svg" class="curtain-svg" style="left:50%; width:50%;" viewBox="0 0 960 900" preserveAspectRatio="xMaxYMin slice" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <linearGradient id="velvR" x1="1" y1="0" x2="0" y2="0">
+            <stop offset="0%"   stop-color="#1a0008"/>
+            <stop offset="6%"   stop-color="#6b0f1e"/>
+            <stop offset="14%"  stop-color="#3d0710"/>
+            <stop offset="22%"  stop-color="#8b1a2e"/>
+            <stop offset="30%"  stop-color="#5c0a1c"/>
+            <stop offset="38%"  stop-color="#9c2235"/>
+            <stop offset="46%"  stop-color="#6b1020"/>
+            <stop offset="54%"  stop-color="#8b1a2e"/>
+            <stop offset="62%"  stop-color="#4a0818"/>
+            <stop offset="70%"  stop-color="#7a1525"/>
+            <stop offset="78%"  stop-color="#3a0610"/>
+            <stop offset="86%"  stop-color="#6b1020"/>
+            <stop offset="93%"  stop-color="#4a0818"/>
+            <stop offset="100%" stop-color="#2a040e"/>
+        </linearGradient>
+        <linearGradient id="sheenR" x1="1" y1="0" x2="0" y2="0">
+            <stop offset="0%"   stop-color="rgba(255,200,200,0)"/>
+            <stop offset="8%"   stop-color="rgba(255,180,180,.12)"/>
+            <stop offset="16%"  stop-color="rgba(255,200,200,0)"/>
+            <stop offset="24%"  stop-color="rgba(255,180,180,.1)"/>
+            <stop offset="32%"  stop-color="rgba(255,200,200,0)"/>
+            <stop offset="40%"  stop-color="rgba(255,180,180,.08)"/>
+            <stop offset="50%"  stop-color="rgba(255,200,200,0)"/>
+            <stop offset="60%"  stop-color="rgba(255,180,180,.1)"/>
+            <stop offset="70%"  stop-color="rgba(255,200,200,0)"/>
+            <stop offset="80%"  stop-color="rgba(255,180,180,.08)"/>
+            <stop offset="90%"  stop-color="rgba(255,200,200,0)"/>
+            <stop offset="100%" stop-color="rgba(255,180,180,.06)"/>
+        </linearGradient>
+        <linearGradient id="goldFringeR" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"   stop-color="#f5c842"/>
+            <stop offset="40%"  stop-color="#d4a017"/>
+            <stop offset="100%" stop-color="#8b6914"/>
+        </linearGradient>
+        <clipPath id="rightClip">
+            <path d="
+                M960,0 H50
+                C65,45  40,90  60,135
+                C80,180 52,225 72,270
+                C92,315 60,360 82,405
+                C104,450 68,495 90,540
+                C112,585 74,630 98,675
+                C122,720 82,765 108,810
+                C120,840 105,870 112,900
+                L960,900 Z
+            "/>
+        </clipPath>
+    </defs>
+    <g clip-path="url(#rightClip)">
+        <rect width="960" height="900" fill="url(#velvR)"/>
+        <rect width="960" height="900" fill="url(#sheenR)"/>
+    </g>
+    <path d="
+        M50,0
+        C65,45  40,90  60,135
+        C80,180 52,225 72,270
+        C92,315 60,360 82,405
+        C104,450 68,495 90,540
+        C112,585 74,630 98,675
+        C122,720 82,765 108,810
+        C120,840 105,870 112,900"
+        fill="none" stroke="url(#goldFringeR)" stroke-width="5" opacity="0.9"/>
+    <path d="
+        M50,0
+        C65,45  40,90  60,135
+        C80,180 52,225 72,270
+        C92,315 60,360 82,405
+        C104,450 68,495 90,540
+        C112,585 74,630 98,675
+        C122,720 82,765 108,810
+        C120,840 105,870 112,900"
+        fill="none" stroke="#f5c842" stroke-width="2" stroke-dasharray="8,14" opacity="0.7"/>
+</svg>
+
+<!-- PELMET -->
+<svg class="pelmet-svg" id="pelmet-svg" viewBox="0 0 1920 80" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <linearGradient id="pelmetGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"   stop-color="#3d0710"/>
+            <stop offset="100%" stop-color="#1a0008"/>
+        </linearGradient>
+        <clipPath id="pelmetClip">
+            <path d="M0,0 H1920 V55
+                Q1860,80 1800,55 Q1740,30 1680,55 Q1620,80 1560,55 Q1500,30 1440,55
+                Q1380,80 1320,55 Q1260,30 1200,55 Q1140,80 1080,55 Q1020,30  960,55
+                Q 900,80  840,55 Q 780,30  720,55 Q 660,80  600,55 Q 540,30  480,55
+                Q 420,80  360,55 Q 300,30  240,55 Q 180,80  120,55 Q  60,30    0,55 Z"/>
+        </clipPath>
+    </defs>
+    <g clip-path="url(#pelmetClip)">
+        <rect width="1920" height="80" fill="url(#pelmetGrad)"/>
+        <rect width="1920" height="6" y="0" fill="#d4a017" opacity="0.8"/>
+        <rect width="1920" height="80" fill="url(#sheenL)" opacity="0.5"/>
+    </g>
+    <path d="M0,55
+        Q 60,30  120,55 Q 180,80  240,55 Q 300,30  360,55 Q 420,80  480,55
+        Q 540,30  600,55 Q 660,80  720,55 Q 780,30  840,55 Q 900,80  960,55
+        Q1020,30 1080,55 Q1140,80 1200,55 Q1260,30 1320,55 Q1380,80 1440,55
+        Q1500,30 1560,55 Q1620,80 1680,55 Q1740,30 1800,55 Q1860,80 1920,55"
+        fill="none" stroke="#f5c842" stroke-width="3" opacity="0.85"/>
+</svg>
+
+<!-- Back button -->
+<a href="index.html?skipIntro=true" class="back-btn">← back home</a>
+
+<!-- SCENE -->
+<div class="scene">
+    <p class="phase-label" id="phase-label">born in 2003...</p>
+
+    <div class="cake-wrap" id="cake-outer">
+        <div class="cake-ambient-glow" id="cake-ambient-glow"></div>
+
+        <!-- Number candles -->
+        <div class="number-stage" id="number-stage">
+            <div class="digit-slot" id="d2" style="width:62px">
+                <div class="flame-area"><div class="f-outer"></div><div class="f-inner"></div><div class="smoke-puff"></div></div>
+                <div class="digit-num">2</div>
+            </div>
+            <div class="digit-slot" id="d0a" style="width:62px">
+                <div class="flame-area"><div class="f-outer"></div><div class="f-inner"></div><div class="smoke-puff"></div></div>
+                <div class="digit-num">0</div>
+            </div>
+            <div class="digit-slot" id="d0b" style="width:62px">
+                <div class="flame-area"><div class="f-outer"></div><div class="f-inner"></div><div class="smoke-puff"></div></div>
+                <div class="digit-num">0</div>
+            </div>
+            <div class="digit-slot" id="d3" style="width:62px">
+                <div class="flame-area"><div class="f-outer"></div><div class="f-inner"></div><div class="smoke-puff"></div></div>
+                <div class="digit-num">3</div>
+            </div>
+        </div>
+
+        <!-- Cake layers -->
+        <div class="cake-inner">
+            <div class="top-glow" id="top-glow"></div>
+            <div class="cake-layer layer-1">
+                <div class="drip" style="left:12%"></div><div class="drip" style="left:35%"></div>
+                <div class="drip" style="left:62%"></div><div class="drip" style="left:83%"></div>
+                <div class="sp" style="background:#ffd700;left:9%"></div>
+                <div class="sp" style="background:#a78bfa;left:30%"></div>
+                <div class="sp" style="background:#34d399;left:63%"></div>
+                <div class="sp" style="background:#60a5fa;left:83%"></div>
+                <span class="cake-text">Happy Birthday Papuu!! ♡</span>
+            </div>
+            <div class="cake-layer layer-2">
+                <div class="drip" style="left:6%"></div><div class="drip" style="left:20%"></div>
+                <div class="drip" style="left:38%"></div><div class="drip" style="left:56%"></div>
+                <div class="drip" style="left:73%"></div><div class="drip" style="left:88%"></div>
+                <div class="sp" style="background:#fb923c;left:13%"></div>
+                <div class="sp" style="background:#ffd700;left:40%"></div>
+                <div class="sp" style="background:#f472b6;left:65%"></div>
+                <div class="sp" style="background:#a78bfa;left:85%"></div>
+            </div>
+            <div class="cake-layer layer-3">
+                <div class="drip" style="left:4%"></div><div class="drip" style="left:13%"></div>
+                <div class="drip" style="left:25%"></div><div class="drip" style="left:39%"></div>
+                <div class="drip" style="left:53%"></div><div class="drip" style="left:67%"></div>
+                <div class="drip" style="left:80%"></div><div class="drip" style="left:91%"></div>
+                <div class="sp" style="background:#60a5fa;left:7%"></div>
+                <div class="sp" style="background:#ffd700;left:27%"></div>
+                <div class="sp" style="background:#34d399;left:50%"></div>
+                <div class="sp" style="background:#fb923c;left:71%"></div>
+                <div class="sp" style="background:#f472b6;left:88%"></div>
+            </div>
+            <div class="cake-plate"></div>
+            <div class="plate-shadow"></div>
+        </div>
+    </div>
+
+    <div class="reveal-msg" id="reveal-msg">
+        <h2>✨ Happy Birthday Papuu!! ✨</h2>
+        <p>from 2003 to now — every year more magical 🧡</p>
+        <div class="year-line">2003 &nbsp;→&nbsp; now 23 ✦</div>
+    </div>
+
+    <div class="blow-wrap" id="blow-wrap">
+        <button class="blow-btn" id="blow-btn">🎤 make a wish — blow!</button>
+    </div>
+
+    <div class="wish-card" id="wish-card">
+        <h3>🎉 wish made! 🎉</h3>
+        <p>Happy Birthday, Papuu!! ♡</p>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script>
+// ── Glitter ────────────────────────────────────────────
+(function() {
+    const wrap = document.getElementById('glitter-wrap');
+    const colors = ['#ffd700','#ffb3c6','#c084fc','#a78bfa','#ffe566','#ff6b9e'];
+    for (let i = 0; i < 30; i++) {
+        const g = document.createElement('div');
+        g.className = 'glitter';
+        const s = 2 + Math.random() * 4;
+        g.style.cssText = `left:${Math.random()*100}%;width:${s}px;height:${s}px;`+
+            `background:radial-gradient(circle,${colors[Math.floor(Math.random()*colors.length)]},transparent);`+
+            `animation-duration:${7+Math.random()*10}s;animation-delay:${Math.random()*9}s;`;
+        wrap.appendChild(g);
+    }
+})();
+
+// ── Animation refs ─────────────────────────────────────
+const d2 = document.getElementById('d2'), d0a = document.getElementById('d0a'),
+      d0b = document.getElementById('d0b'), d3  = document.getElementById('d3');
+const label      = document.getElementById('phase-label');
+const revealMsg  = document.getElementById('reveal-msg');
+const blowWrap   = document.getElementById('blow-wrap');
+const blowBtn    = document.getElementById('blow-btn');
+const wishCard   = document.getElementById('wish-card');
+const topGlow    = document.getElementById('top-glow');
+const ambientGlow = document.getElementById('cake-ambient-glow');
+const curtL      = document.getElementById('curtain-left-svg');
+const curtR      = document.getElementById('curtain-right-svg');
+const pelmet     = document.getElementById('pelmet-svg');
+
+const after = ms => new Promise(r => setTimeout(r, ms));
+
+function setLabel(txt) {
+    label.style.opacity = '0';
+    setTimeout(() => { label.textContent = txt; label.style.opacity = '1'; }, 400);
+}
+
+async function runShow() {
+    // 1. Pause with curtains closed
+    await after(500);
+
+    // 2. Curtains sweep open smoothly
+    curtL.classList.add('open');
+    curtR.classList.add('open');
+    await after(200);
+    pelmet.classList.add('hide');
+    await after(1500);
+
+    // 3. Admire 2003
+    await after(1400);
+
+    // 4. Zeros dim + blow out
+    setLabel('the zeros vanish into thin air...');
+    d0a.classList.add('dimming'); d0b.classList.add('dimming');
+    await after(700);
+    d0a.classList.add('blown'); d0b.classList.add('blown');
+    await after(950);
+
+    // 5. Zeros collapse → 2 & 3 slide together
+    d0a.style.cssText += 'width:0px;opacity:0;margin:0;';
+    d0b.style.cssText += 'width:0px;opacity:0;margin:0;';
+    setLabel('2 and 3 find each other...');
+    await after(1100);
+
+    // 6. 23 ignites!
+    setLabel('');
+    d2.classList.add('ignited'); d3.classList.add('ignited');
+    topGlow.style.background = 'radial-gradient(ellipse, rgba(255,200,50,.7) 0%, transparent 70%)';
+    ambientGlow.style.background = 'radial-gradient(ellipse at center, rgba(255, 190, 70, 0.4) 0%, rgba(220, 80, 160, 0.2) 50%, transparent 70%)';
+    await after(600);
+
+    // 7. Reveal
+    revealMsg.classList.add('show');
+    setLabel('✦ ta-da! ✦');
+    await after(300);
+    if (window.confetti) confetti({
+        particleCount: 140, spread: 85, origin: { y: 0.48 },
+        colors: ['#ffd700','#ff6b9e','#c084fc','#34d399','#ffb3c6','#ffffff']
+    });
+    await after(900);
+    blowWrap.classList.add('show');
+}
+
+// ── Mic blow ───────────────────────────────────────────
+let micActive = false, wishDone = false;
+blowBtn.addEventListener('click', () => { if (!wishDone) startMic(); });
+
+function startMic() {
+    if (micActive) return; micActive = true;
+    blowBtn.textContent = '🎤 listening... blow!';
+    blowBtn.classList.add('active-mic');
+    navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const src = ctx.createMediaStreamSource(stream);
+        const analyser = ctx.createAnalyser(); analyser.fftSize = 256;
+        src.connect(analyser);
+        const data = new Uint8Array(analyser.frequencyBinCount);
+        let cnt = 0;
+        function check() {
+            if (wishDone) { stream.getTracks().forEach(t => t.stop()); return; }
+            analyser.getByteFrequencyData(data);
+            const avg = data.reduce((a,b)=>a+b,0)/data.length;
+            cnt = avg > 38 ? cnt+1 : Math.max(0,cnt-1);
+            if (cnt > 8) { triggerWish(); stream.getTracks().forEach(t=>t.stop()); return; }
+            requestAnimationFrame(check);
+        }
+        check();
+    }).catch(() => {
+        blowBtn.textContent = '🎤 tap to make a wish!';
+        blowBtn.classList.remove('active-mic'); micActive = false;
+        blowBtn.addEventListener('click', triggerWish, { once: true });
+    });
+}
+
+function triggerWish() {
+    if (wishDone) return; wishDone = true;
+    d2.classList.remove('ignited'); d3.classList.remove('ignited');
+    d2.classList.add('blown'); d3.classList.add('blown');
+    topGlow.style.opacity = '0'; blowWrap.style.opacity = '0';
+    setTimeout(() => {
+        wishCard.classList.add('show');
+        if (window.confetti) confetti({ particleCount: 240, spread: 120, origin: { y: 0.55 },
+            colors: ['#ffb3c6','#ff6b9e','#ffd700','#a78bfa','#34d399','#ffffff'] });
+    }, 700);
+}
+
+runShow();
+</script>
+<script src="content.js"></script>
+</body>
+</html>

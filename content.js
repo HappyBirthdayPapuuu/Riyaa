@@ -1,0 +1,184 @@
+// Central site content loaded across the website.
+// Edit content.json to change any text easily, then run: python3 sync_all.py
+window.SITE_CONTENT = {
+  "siteTitle": "Happy Birthday!",
+  "introEnvelope": {
+    "title": "Hey You!",
+    "body": "I made a little something just for you...",
+    "highlight": "happy birthday ✿",
+    "stamp": "HAPPY BIRTHDAY",
+    "heartSeal": "🧡",
+    "tapInstruction": "TAP ENVELOPE TO BEGIN"
+  },
+  "homepage": {
+    "header": {
+      "badge": "Bettuuu✿",
+      "subtitle": "HAPPY BIRTHDAY",
+      "title": "To My Favourite Person"
+    },
+    "countdown": {
+      "targetDate": "2026-08-31T00:00:00",
+      "birthdayLabel": "august 31 ✨",
+      "celebrationText": "it's your special day! 🎉",
+      "units": {
+        "days": "days",
+        "hours": "hours",
+        "minutes": "minutes",
+        "seconds": "seconds"
+      }
+    },
+    "messageCard": "Heyy papuuu!! You are the best thing happened to me .Today is the day where my soulmate born,where my angel born.Happy Birthday My little girl :)",
+    "musicPlayer": {
+      "nowPlaying": "NOW PLAYING",
+      "songTitle": "Eppadi Vandhaayo",
+      "artist": "",
+      "instruction": "✿ press play — this one is permanently attached to memories of you.",
+      "audioSrc": "assets/Eppadi%20Vandhaayo%20-%20Chinmayi%2C%20Anand%20Aravindakshan%20-%20MassTamilan.mp3"
+    },
+    "flipCardsSection": {
+      "title": "flip one over",
+      "subtitle": "every photo has something written on the back ✿",
+      "cards": [
+        {
+          "backText": "Riyaayini is a neat child.She is able to diffrentiate between Tall/Short"
+        },
+        {
+          "backText": "Still you look like little baby through my eyes"
+        },
+        {
+          "backText": "Bettu's memorable day."
+        },
+        {
+          "backText": "The picture on which i admired u a lot"
+        },
+        {
+          "backText": "Memorable trip with memorable person"
+        },
+        {
+          "backText": "Taken on One of the best day of my life"
+        }
+      ]
+    },
+    "reasonsSection": {
+      "title": "things i love about you ✿",
+      "initialPrompt": "Click the button to spin!",
+      "buttonText": "Tell me something sweet 🎰",
+      "reasons": [
+        "the way you admire your Gopayyyy",
+        "the way you take responsiblity over things",
+        "your innocence",
+        "the way you make everything better just by being there",
+        "Your way of thinking",
+        "the countless amazing memories we've made",
+        "the responsiblity you are carrying for your family",
+        "the similarites in our likes and dislikes",
+        "how safe I feel when I'm with you",
+        "your advices",
+        "The warmth feel u give when I'm around u",
+        "The comfort i have with u"
+      ]
+    },
+    "loveLetter": {
+      "title": "a letter for you 📜",
+      "text": "From the day I met you until now, my life has changed in the most beautiful ways. You walked in and everything just made sense. Every laugh we’ve shared, every late-night conversation, and even every silly argument—I wouldn’t trade a single second of it. You are my favorite person, my best friend, and the reason I smile every single day. Happy 23rd birthday, my love. Here’s to a lifetime more of us. ❤️",
+      "signature": "— yours, always Ajjuuu ♡"
+    },
+    "navHub": {
+      "title": "explore more ✿",
+      "links": [
+        {
+          "icon": "🎮",
+          "title": "treasure hunt",
+          "desc": "23 clues, 23 gifts",
+          "href": "album.html"
+        },
+        {
+          "icon": "🫧",
+          "title": "Your memories",
+          "desc": "photos that float like dreams",
+          "href": "gallery.html"
+        },
+        {
+          "icon": "💜",
+          "title": "Our space",
+          "desc": "see the bigger picture",
+          "href": "mosaic.html"
+        },
+        {
+          "icon": "🎂",
+          "title": "make a wish",
+          "desc": "blow out 23 candles",
+          "href": "cake.html"
+        }
+      ]
+    }
+  },
+  "cakePage": {
+    "pageTitle": "Happy Birthday Papuu!! 🎂✨",
+    "curtainTextLeft": "✦ a magical moment ✦",
+    "curtainTextRight": "✦ just for you ✦",
+    "phase1Label": "born in 2003...",
+    "phase2Label": "the zeros vanish into thin air...",
+    "phase3Label": "2 and 3 find each other...",
+    "revealHeader": "✨ Happy Birthday Papuu!! ✨",
+    "revealSubtitle": "from 2003 to now — every year more magical 🧡",
+    "yearLine": "2003 → now 23 ✦",
+    "blowButtonText": "🎤 make a wish — blow!",
+    "wishTitle": "🎉 wish made! 🎉",
+    "wishSubtitle": "Happy Birthday, Papuu!! ♡"
+  },
+  "memoriesPage": {
+    "title": "Riyuuu's Memories 🫧",
+    "subtitle": ""
+  },
+  "mosaicPage": {
+    "title": "every piece is you 💜",
+    "subtitle": "tap any piece of the heart ✿",
+    "captions": [
+      "you looked so effortlessly beautiful here ✿",
+      "the smile that lights up my whole world ✨",
+      "every piece of my heart belongs to you 💜",
+      "my absolute favorite view in the universe ♡",
+      "laughing with you is my favorite thing to do 💫",
+      "pure happiness captured in a single second ☀️",
+      "you make every ordinary day feel magical 🌸",
+      "looking at you and knowing I got so lucky 🧡",
+      "forever my favorite person, always and forever 💕",
+      "the prettiest girl in every single room 🌷",
+      "this memory lives in my heart rent-free 🌿",
+      "holding on to every little moment with you 💖",
+      "with you, everything just feels right ♡",
+      "sunshine, sweet laughs, and you ☀️"
+    ]
+  },
+  "treasureHunt": {
+    "title": "23 gifts, 23 clues 🎁",
+    "subtitle": "find each gift to unlock the next clue ✿",
+    "clues": [
+      "Clue 1: Placeholder clue for gift 1. Edit this text in content.json!",
+      "Clue 2: Placeholder clue for gift 2. Edit this text in content.json!",
+      "Clue 3: Placeholder clue for gift 3. Edit this text in content.json!",
+      "Clue 4: Placeholder clue for gift 4. Edit this text in content.json!",
+      "Clue 5: Placeholder clue for gift 5. Edit this text in content.json!",
+      "Clue 6: Placeholder clue for gift 6. Edit this text in content.json!",
+      "Clue 7: Placeholder clue for gift 7. Edit this text in content.json!",
+      "Clue 8: Placeholder clue for gift 8. Edit this text in content.json!",
+      "Clue 9: Placeholder clue for gift 9. Edit this text in content.json!",
+      "Clue 10: Placeholder clue for gift 10. Edit this text in content.json!",
+      "Clue 11: Placeholder clue for gift 11. Edit this text in content.json!",
+      "Clue 12: Placeholder clue for gift 12. Edit this text in content.json!",
+      "Clue 13: Placeholder clue for gift 13. Edit this text in content.json!",
+      "Clue 14: Placeholder clue for gift 14. Edit this text in content.json!",
+      "Clue 15: Placeholder clue for gift 15. Edit this text in content.json!",
+      "Clue 16: Placeholder clue for gift 16. Edit this text in content.json!",
+      "Clue 17: Placeholder clue for gift 17. Edit this text in content.json!",
+      "Clue 18: Placeholder clue for gift 18. Edit this text in content.json!",
+      "Clue 19: Placeholder clue for gift 19. Edit this text in content.json!",
+      "Clue 20: Placeholder clue for gift 20. Edit this text in content.json!",
+      "Clue 21: Placeholder clue for gift 21. Edit this text in content.json!",
+      "Clue 22: Placeholder clue for gift 22. Edit this text in content.json!",
+      "Clue 23: Messages from your favorite people! 📹"
+    ],
+    "videoModalTitle": "messages from the gang ✿"
+  }
+};

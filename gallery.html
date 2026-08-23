@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Floating Memories 🫧</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        .gallery-body {
+            background: radial-gradient(circle at 50% 50%, #fff0f5 0%, #ffe6f0 50%, #ffd9e8 100%);
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+            position: relative;
+        }
+
+        .gallery-header {
+            position: relative;
+            z-index: 50;
+            text-align: center;
+            padding-top: 25px;
+            pointer-events: none;
+        }
+
+        .gallery-title {
+            font-size: 2.3rem;
+            color: var(--accent-orange);
+            margin-bottom: 2px;
+            text-shadow: 0 2px 8px rgba(255, 107, 158, 0.2);
+        }
+
+        .gallery-subtitle {
+            font-family: 'Caveat', cursive;
+            font-size: 1.4rem;
+            color: var(--text-light);
+        }
+
+        .float-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .float-photo {
+            position: absolute;
+            border-radius: 50%;
+            padding: 4px;
+            background: #ffffff;
+            box-shadow: 0 8px 24px rgba(224, 94, 150, 0.25), 0 2px 6px rgba(0,0,0,0.08);
+            cursor: pointer;
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+            z-index: 10;
+            will-change: transform, left, top;
+        }
+
+        .float-photo:hover {
+            transform: scale(1.3) !important;
+            z-index: 100 !important;
+            box-shadow: 0 14px 35px rgba(224, 94, 150, 0.45);
+        }
+
+        .float-photo img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            display: block;
+            pointer-events: none;
+        }
+
+        .ambient-bubble {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8), rgba(255, 180, 210, 0.3));
+            box-shadow: inset -2px -2px 6px rgba(255, 107, 158, 0.2), 0 0 10px rgba(255, 255, 255, 0.5);
+            pointer-events: none;
+            z-index: 2;
+            animation: floatBubble infinite alternate ease-in-out;
+        }
+
+        /* ── Fullscreen Lightbox Overlay ── */
+        #gallery-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(15, 5, 20, 0.88);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            animation: overlayFadeIn 0.25s ease-out;
+        }
+
+        #gallery-overlay.hidden {
+            display: none !important;
+        }
+
+        .gallery-overlay-content {
+            max-width: 90vw;
+            max-height: 90vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            animation: overlayZoomIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .gallery-overlay-content img {
+            max-width: 88vw;
+            max-height: 85vh;
+            border-radius: 18px;
+            object-fit: contain;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.15);
+            display: block;
+        }
+
+        .gallery-close-btn {
+            position: absolute;
+            top: 24px;
+            right: 28px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+            transition: transform 0.2s, background 0.2s;
+            z-index: 1010;
+        }
+
+        .gallery-close-btn:hover {
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        @keyframes overlayFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes overlayZoomIn {
+            from { transform: scale(0.85); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body class="gallery-body">
+    <a href="index.html?skipIntro=true" class="back-btn">← back home</a>
+
+    <div class="gallery-header">
+        <h1 class="gallery-title">Riyuuu's Memories 🫧</h1>
+        <p class="gallery-subtitle">tap any bubble to open full screen ♡</p>
+    </div>
+
+    <div class="float-container" id="float-container">
+        <!-- 20 Clean Floating Memory Bubbles -->
+        <div class="float-photo"><img decoding="async" src="memories/10F43B2B-9593-4A1A-BB6F-81702061DC2D%202.jpg" alt="Memory 1"></div>
+        <div class="float-photo"><img decoding="async" src="memories/172FE71D-60FA-4576-811C-473F5957C346.jpg" alt="Memory 2"></div>
+        <div class="float-photo"><img decoding="async" src="memories/4BCC2D1F-D641-4DA2-80C2-0764F5350481.JPG" alt="Memory 3"></div>
+        <div class="float-photo"><img decoding="async" src="memories/61F88D42-139F-4516-AE2D-B6A44198DAC5.JPG" alt="Memory 4"></div>
+        <div class="float-photo"><img decoding="async" src="memories/6A05ECAB-FC49-44F3-8F69-C98D4B181C49.jpg" alt="Memory 5"></div>
+        <div class="float-photo"><img decoding="async" src="memories/733C32E6-A7AD-4FAF-B825-4930652D5B7F.JPG" alt="Memory 6"></div>
+        <div class="float-photo"><img decoding="async" src="memories/78FF8447-05EB-4A43-AEF9-788C37A0A8FE.JPG" alt="Memory 7"></div>
+        <div class="float-photo"><img decoding="async" src="memories/AFC34E8B-F05A-460E-8EEE-D468DC5AE1D3.JPG" alt="Memory 8"></div>
+        <div class="float-photo"><img decoding="async" src="memories/BAC12241-1B36-42F1-9A5C-333D7930ECB6.JPG" alt="Memory 9"></div>
+        <div class="float-photo"><img decoding="async" src="memories/IMG_0034.jpg" alt="Memory 10"></div>
+        <div class="float-photo"><img decoding="async" src="memories/IMG_2207.JPG" alt="Memory 11"></div>
+        <div class="float-photo"><img decoding="async" src="memories/IMG_2286.jpg" alt="Memory 12"></div>
+        <div class="float-photo"><img decoding="async" src="memories/IMG_3143.JPG" alt="Memory 13"></div>
+        <div class="float-photo"><img decoding="async" src="memories/PHOTO-2025-09-24-03-37-29.jpg" alt="Memory 14"></div>
+        <div class="float-photo"><img decoding="async" src="memories/PHOTO-2026-02-22-01-49-45.jpg" alt="Memory 15"></div>
+        <div class="float-photo"><img decoding="async" src="memories/PHOTO-2026-05-03-11-07-58.jpg" alt="Memory 16"></div>
+        <div class="float-photo"><img decoding="async" src="memories/PHOTO-2026-05-03-11-07-58%202.jpg" alt="Memory 17"></div>
+        <div class="float-photo"><img decoding="async" src="memories/PHOTO-2026-05-08-21-24-29.jpg" alt="Memory 18"></div>
+        <div class="float-photo"><img decoding="async" src="memories/View%20recent%20photos%202.png" alt="Memory 19"></div>
+        <div class="float-photo"><img decoding="async" src="memories/fc5441a9-a1bc-435f-a6b3-ec8230cf590e.JPG" alt="Memory 20"></div>
+    </div>
+
+    <!-- Fullscreen Lightbox Overlay (Clean & No Caption) -->
+    <div id="gallery-overlay" class="hidden" onclick="closeGalleryOverlay()">
+        <button class="gallery-close-btn" onclick="closeGalleryOverlay()">✕</button>
+        <div class="gallery-overlay-content" onclick="event.stopPropagation()">
+            <img decoding="async" id="gallery-overlay-img" src="" alt="Fullscreen photo">
+        </div>
+    </div>
+
+    <script src="content.js"></script>
+    <script src="memories/memories.js"></script>
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', initFloatingGallery);
+    </script>
+</body>
+</html>
