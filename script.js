@@ -1,3 +1,87 @@
+// --- Happy Birthday Melody Synthesizer ---
+function playHappyBirthdayTune() {
+    try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContext) return;
+        const ctx = new AudioContext();
+        if (ctx.state === 'suspended') ctx.resume();
+
+        const notes = {
+            'C4': 261.63, 'D4': 293.66, 'E4': 329.63, 'F4': 349.23,
+            'G4': 392.00, 'A4': 440.00, 'Bb4': 466.16, 'B4': 493.88,
+            'C5': 523.25, 'D5': 587.33, 'E5': 659.25, 'F5': 698.46
+        };
+
+        const score = [
+            { note: 'C4', dur: 0.35, pause: 0.08 },
+            { note: 'C4', dur: 0.25, pause: 0.05 },
+            { note: 'D4', dur: 0.6, pause: 0.05 },
+            { note: 'C4', dur: 0.6, pause: 0.05 },
+            { note: 'F4', dur: 0.6, pause: 0.05 },
+            { note: 'E4', dur: 1.1, pause: 0.2 },
+
+            { note: 'C4', dur: 0.35, pause: 0.08 },
+            { note: 'C4', dur: 0.25, pause: 0.05 },
+            { note: 'D4', dur: 0.6, pause: 0.05 },
+            { note: 'C4', dur: 0.6, pause: 0.05 },
+            { note: 'G4', dur: 0.6, pause: 0.05 },
+            { note: 'F4', dur: 1.1, pause: 0.2 },
+
+            { note: 'C4', dur: 0.35, pause: 0.08 },
+            { note: 'C4', dur: 0.25, pause: 0.05 },
+            { note: 'C5', dur: 0.6, pause: 0.05 },
+            { note: 'A4', dur: 0.6, pause: 0.05 },
+            { note: 'F4', dur: 0.6, pause: 0.05 },
+            { note: 'E4', dur: 0.6, pause: 0.05 },
+            { note: 'D4', dur: 0.9, pause: 0.18 },
+
+            { note: 'Bb4', dur: 0.35, pause: 0.08 },
+            { note: 'Bb4', dur: 0.25, pause: 0.05 },
+            { note: 'A4', dur: 0.6, pause: 0.05 },
+            { note: 'F4', dur: 0.6, pause: 0.05 },
+            { note: 'G4', dur: 0.6, pause: 0.05 },
+            { note: 'F4', dur: 1.4, pause: 0.3 }
+        ];
+
+        let curTime = ctx.currentTime + 0.1;
+        score.forEach(item => {
+            const freq = notes[item.note];
+            if (freq) {
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq, curTime);
+
+                const osc2 = ctx.createOscillator();
+                const gain2 = ctx.createGain();
+                osc2.type = 'triangle';
+                osc2.frequency.setValueAtTime(freq * 2, curTime);
+
+                gain.gain.setValueAtTime(0, curTime);
+                gain.gain.linearRampToValueAtTime(0.18, curTime + 0.02);
+                gain.gain.exponentialRampToValueAtTime(0.0001, curTime + item.dur);
+
+                gain2.gain.setValueAtTime(0, curTime);
+                gain2.gain.linearRampToValueAtTime(0.05, curTime + 0.02);
+                gain2.gain.exponentialRampToValueAtTime(0.0001, curTime + item.dur * 0.7);
+
+                osc.connect(gain);
+                osc2.connect(gain2);
+                gain.connect(ctx.destination);
+                gain2.connect(ctx.destination);
+
+                osc.start(curTime);
+                osc.stop(curTime + item.dur + 0.1);
+                osc2.start(curTime);
+                osc2.stop(curTime + item.dur + 0.1);
+            }
+            curTime += item.dur + item.pause;
+        });
+    } catch (e) {
+        console.log("Audio playback error:", e);
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('skipIntro') === 'true') {
@@ -28,6 +112,21 @@ function openEnvelope() {
                 window.scrollTo(0, 0);
                 startFloatingHearts();
                 startEmojiRain();
+
+                // If opened after Aug 31 12 AM, trigger happy birthday celebration audio
+                if (isCard23DateUnlocked()) {
+                    const audio = document.getElementById('bg-music');
+                    const playBtn = document.getElementById('play-btn');
+                    if (audio && audio.src && !audio.src.endsWith('index.html')) {
+                        audio.play().then(() => {
+                            if (playBtn) playBtn.textContent = '⏸';
+                        }).catch(() => {
+                            playHappyBirthdayTune();
+                        });
+                    } else {
+                        playHappyBirthdayTune();
+                    }
+                }
             }, 800);
             
         }, 1500); // Give time to read the letter
@@ -449,6 +548,7 @@ function resetHunt() {
     if(confirm("Are you sure you want to reset all progress?")) {
         localStorage.setItem('treasureProgress', '1');
         localStorage.removeItem('card23_backdoor');
+        localStorage.removeItem('cake_backdoor');
         document.querySelectorAll('.treasure-card.flipped').forEach(c => c.classList.remove('flipped'));
         setTimeout(() => {
             initTreasureHunt();

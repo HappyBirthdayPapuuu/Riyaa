@@ -259,17 +259,122 @@
     .wish-card h3 { font-family: 'Playfair Display', serif; font-size: 1.9rem; color: #ffd700; text-shadow: 0 0 16px rgba(255,215,0,.5); }
     .wish-card p { font-family: 'Caveat', cursive; font-size: 1.6rem; color: #ffb3c6; margin-top: 6px; }
 
+    .digit-slot.collapsed {
+        width: 0px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        opacity: 0 !important;
+        overflow: hidden !important;
+        pointer-events: none !important;
+    }
+
+    .digit-slot.ignited {
+        margin: 0 1px;
+    }
+
     @media (max-width: 480px) {
-        .digit-num { font-size: 40px; }
-        .digit-slot { width: 48px !important; }
-        .number-stage { height: 78px; }
+        .digit-num { font-size: 38px; }
+        .digit-slot { width: 44px; }
+        .number-stage { height: 72px; margin-bottom: -12px; }
         .layer-1 { width: 210px; } .layer-2 { width: 270px; } .layer-3 { width: 330px; }
         .cake-wrap { width: 340px; } .cake-plate { width: 350px; }
         .reveal-msg h2 { font-size: 1.6rem; }
     }
+
+    /* ── Cake Lock Overlay (Date lock + 10-tap backdoor) ── */
+    .cake-lock-overlay {
+        position: fixed; inset: 0;
+        background: radial-gradient(ellipse at 50% 30%, #15002b 0%, #080014 70%, #020006 100%);
+        z-index: 5000;
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        padding: 20px;
+        transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .cake-lock-overlay.hidden {
+        opacity: 0; pointer-events: none; transform: scale(1.05);
+    }
+    .cake-lock-box {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(16px);
+        padding: 35px 25px;
+        border-radius: 24px;
+        text-align: center;
+        max-width: 420px;
+        width: 100%;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 30px rgba(236, 72, 153, 0.15);
+        cursor: pointer;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+        transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .cake-lock-box:active {
+        transform: scale(0.97);
+    }
+    .lock-icon-wrap {
+        display: flex; flex-direction: column; align-items: center; gap: 8px;
+        margin-bottom: 16px;
+    }
+    .cake-lock-icon {
+        font-size: 3.5rem;
+        filter: drop-shadow(0 4px 10px rgba(255, 215, 0, 0.4));
+        animation: lockFloat 3s ease-in-out infinite alternate;
+    }
+    @keyframes lockFloat {
+        0% { transform: translateY(0); }
+        100% { transform: translateY(-8px); }
+    }
+    .cake-lock-badge {
+        font-size: 0.85rem; font-weight: 700; color: #ffd700;
+        background: rgba(255, 215, 0, 0.15);
+        border: 1px solid rgba(255, 215, 0, 0.3);
+        padding: 4px 12px; border-radius: 20px;
+        letter-spacing: 1px;
+    }
+    .cake-lock-box h2 {
+        font-family: 'Playfair Display', serif; font-size: 1.8rem;
+        color: #ffd700; margin-bottom: 12px;
+        text-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+    }
+    .cake-lock-box .lock-desc {
+        font-family: 'Caveat', cursive; font-size: 1.45rem;
+        color: #ffb3c6; line-height: 1.35; margin-bottom: 18px;
+    }
+    .cake-mini-preview {
+        font-size: 2rem; margin-bottom: 14px;
+        opacity: 0.8;
+    }
+    .cake-lock-box .lock-hint {
+        font-size: 0.82rem; color: rgba(212, 164, 255, 0.65);
+        letter-spacing: 1px;
+    }
+    .cake-shake {
+        animation: cakeShakeAnim 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+    }
+    @keyframes cakeShakeAnim {
+        0%, 100% { transform: translateX(0); }
+        20%, 60% { transform: translateX(-8px) rotate(-1.5deg); }
+        40%, 80% { transform: translateX(8px) rotate(1.5deg); }
+    }
     </style>
 </head>
 <body>
+
+<!-- Cake Lock Overlay for Aug 31 12:00 AM -->
+<div id="cake-lock-overlay" class="cake-lock-overlay">
+    <a href="index.html?skipIntro=true" class="back-btn">← Back</a>
+    <div class="cake-lock-box" id="cake-lock-box" onclick="handleCakeLockTap()">
+        <div class="lock-icon-wrap">
+            <span class="cake-lock-icon">🔒</span>
+            <span class="cake-lock-badge">Aug 31 · 12:00 AM</span>
+        </div>
+        <h2>The Cake is Still Baking! 🎂</h2>
+        <p class="lock-desc">Come back on August 31 at 12:00 AM to blow out the candles and make your wish ✨</p>
+        <div class="cake-mini-preview">🕯️ 🎂 🕯️</div>
+        <p class="lock-hint">✿ locked until her special day</p>
+    </div>
+</div>
+
 
 <div class="stars-layer"></div>
 <div class="glitter-wrap" id="glitter-wrap"></div>
@@ -560,6 +665,133 @@
     }
 })();
 
+// ── Happy Birthday Melody Synthesizer (Crystal Chime Music Box) ──
+function playHappyBirthdayTune() {
+    try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContext) return;
+        const ctx = new AudioContext();
+        if (ctx.state === 'suspended') ctx.resume();
+
+        const notes = {
+            'C4': 261.63, 'D4': 293.66, 'E4': 329.63, 'F4': 349.23,
+            'G4': 392.00, 'A4': 440.00, 'Bb4': 466.16, 'B4': 493.88,
+            'C5': 523.25, 'D5': 587.33, 'E5': 659.25, 'F5': 698.46
+        };
+
+        const score = [
+            { note: 'C4', dur: 0.35, pause: 0.08 },
+            { note: 'C4', dur: 0.25, pause: 0.05 },
+            { note: 'D4', dur: 0.6, pause: 0.05 },
+            { note: 'C4', dur: 0.6, pause: 0.05 },
+            { note: 'F4', dur: 0.6, pause: 0.05 },
+            { note: 'E4', dur: 1.1, pause: 0.2 },
+
+            { note: 'C4', dur: 0.35, pause: 0.08 },
+            { note: 'C4', dur: 0.25, pause: 0.05 },
+            { note: 'D4', dur: 0.6, pause: 0.05 },
+            { note: 'C4', dur: 0.6, pause: 0.05 },
+            { note: 'G4', dur: 0.6, pause: 0.05 },
+            { note: 'F4', dur: 1.1, pause: 0.2 },
+
+            { note: 'C4', dur: 0.35, pause: 0.08 },
+            { note: 'C4', dur: 0.25, pause: 0.05 },
+            { note: 'C5', dur: 0.6, pause: 0.05 },
+            { note: 'A4', dur: 0.6, pause: 0.05 },
+            { note: 'F4', dur: 0.6, pause: 0.05 },
+            { note: 'E4', dur: 0.6, pause: 0.05 },
+            { note: 'D4', dur: 0.9, pause: 0.18 },
+
+            { note: 'Bb4', dur: 0.35, pause: 0.08 },
+            { note: 'Bb4', dur: 0.25, pause: 0.05 },
+            { note: 'A4', dur: 0.6, pause: 0.05 },
+            { note: 'F4', dur: 0.6, pause: 0.05 },
+            { note: 'G4', dur: 0.6, pause: 0.05 },
+            { note: 'F4', dur: 1.4, pause: 0.3 }
+        ];
+
+        let curTime = ctx.currentTime + 0.1;
+        score.forEach(item => {
+            const freq = notes[item.note];
+            if (freq) {
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq, curTime);
+
+                const osc2 = ctx.createOscillator();
+                const gain2 = ctx.createGain();
+                osc2.type = 'triangle';
+                osc2.frequency.setValueAtTime(freq * 2, curTime);
+
+                gain.gain.setValueAtTime(0, curTime);
+                gain.gain.linearRampToValueAtTime(0.18, curTime + 0.02);
+                gain.gain.exponentialRampToValueAtTime(0.0001, curTime + item.dur);
+
+                gain2.gain.setValueAtTime(0, curTime);
+                gain2.gain.linearRampToValueAtTime(0.05, curTime + 0.02);
+                gain2.gain.exponentialRampToValueAtTime(0.0001, curTime + item.dur * 0.7);
+
+                osc.connect(gain);
+                osc2.connect(gain2);
+                gain.connect(ctx.destination);
+                gain2.connect(ctx.destination);
+
+                osc.start(curTime);
+                osc.stop(curTime + item.dur + 0.1);
+                osc2.start(curTime);
+                osc2.stop(curTime + item.dur + 0.1);
+            }
+            curTime += item.dur + item.pause;
+        });
+    } catch (e) {
+        console.log("Audio playback error:", e);
+    }
+}
+
+// ── Date Lock & 10-Tap Backdoor Check ──
+function isCakeDateUnlocked() {
+    let targetTime = new Date('2026-08-31T00:00:00+05:30').getTime();
+    if (window.SITE_CONTENT && window.SITE_CONTENT.homepage && window.SITE_CONTENT.homepage.countdown && window.SITE_CONTENT.homepage.countdown.targetDate) {
+        const raw = window.SITE_CONTENT.homepage.countdown.targetDate;
+        const parsed = new Date(raw.includes('+') || raw.endsWith('Z') ? raw : raw + '+05:30').getTime();
+        if (!isNaN(parsed)) targetTime = parsed;
+    }
+    return Date.now() >= targetTime;
+}
+
+let cakeTapCount = 0;
+let cakeTapTimer = null;
+
+function handleCakeLockTap() {
+    const box = document.getElementById('cake-lock-box');
+    cakeTapCount++;
+    clearTimeout(cakeTapTimer);
+    cakeTapTimer = setTimeout(() => { cakeTapCount = 0; }, 3500);
+
+    if (box) {
+        box.classList.remove('cake-shake');
+        void box.offsetWidth;
+        box.classList.add('cake-shake');
+    }
+
+    if (cakeTapCount >= 10) {
+        cakeTapCount = 0;
+        localStorage.setItem('cake_backdoor', 'true');
+        unlockAndStartCake();
+    }
+}
+
+function unlockAndStartCake() {
+    const overlay = document.getElementById('cake-lock-overlay');
+    if (overlay) overlay.classList.add('hidden');
+    if (window.confetti) {
+        confetti({ particleCount: 80, spread: 80, origin: { y: 0.5 }, colors: ['#ffd700', '#ff6b9e', '#a78bfa'] });
+    }
+    playHappyBirthdayTune();
+    runShow();
+}
+
 // ── Animation refs ─────────────────────────────────────
 const d2 = document.getElementById('d2'), d0a = document.getElementById('d0a'),
       d0b = document.getElementById('d0b'), d3  = document.getElementById('d3');
@@ -603,8 +835,10 @@ async function runShow() {
     await after(950);
 
     // 5. Zeros collapse → 2 & 3 slide together
-    d0a.style.cssText += 'width:0px;opacity:0;margin:0;';
-    d0b.style.cssText += 'width:0px;opacity:0;margin:0;';
+    d0a.classList.add('collapsed');
+    d0b.classList.add('collapsed');
+    d0a.style.cssText += 'width:0px!important;opacity:0;margin:0;padding:0;';
+    d0b.style.cssText += 'width:0px!important;opacity:0;margin:0;padding:0;';
     setLabel('2 and 3 find each other...');
     await after(1100);
 
@@ -670,7 +904,16 @@ function triggerWish() {
     }, 700);
 }
 
-runShow();
+// Check date lock on load
+document.addEventListener('DOMContentLoaded', () => {
+    const isUnlocked = isCakeDateUnlocked() || localStorage.getItem('cake_backdoor') === 'true';
+    if (isUnlocked) {
+        const overlay = document.getElementById('cake-lock-overlay');
+        if (overlay) overlay.style.display = 'none';
+        playHappyBirthdayTune();
+        runShow();
+    }
+});
 </script>
 <script src="content.js"></script>
 </body>
