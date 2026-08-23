@@ -1,3 +1,74 @@
+// --- Make a Wish Nav Card Lock & 10-Tap Backdoor ---
+let cakeNavTapCount = 0;
+let cakeNavTapTimer = null;
+
+function isCakeUnlocked() {
+    return isCard23DateUnlocked() || localStorage.getItem('cake_backdoor') === 'true';
+}
+
+function initCakeNavLock() {
+    const cakeCard = document.querySelector('.nav-card[href="cake.html"], a[href="cake.html"]');
+    if (!cakeCard) return;
+
+    if (!isCakeUnlocked()) {
+        cakeCard.classList.add('locked-nav');
+        if (!cakeCard.querySelector('.nav-lock-badge')) {
+            const badge = document.createElement('span');
+            badge.className = 'nav-lock-badge';
+            badge.textContent = '🔒 Aug 31';
+            cakeCard.appendChild(badge);
+        }
+
+        cakeCard.onclick = function(e) {
+            if (!isCakeUnlocked()) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                cakeNavTapCount++;
+                clearTimeout(cakeNavTapTimer);
+                cakeNavTapTimer = setTimeout(() => { cakeNavTapCount = 0; }, 3500);
+
+                cakeCard.classList.remove('card-shake');
+                void cakeCard.offsetWidth;
+                cakeCard.classList.add('card-shake');
+
+                if (cakeNavTapCount >= 10) {
+                    cakeNavTapCount = 0;
+                    localStorage.setItem('cake_backdoor', 'true');
+
+                    cakeCard.classList.remove('locked-nav');
+                    const badge = cakeCard.querySelector('.nav-lock-badge');
+                    if (badge) badge.remove();
+
+                    if (window.confetti) {
+                        confetti({
+                            particleCount: 70,
+                            spread: 70,
+                            origin: { y: 0.7 },
+                            colors: ['#ffd700', '#ff6b9e', '#a78bfa', '#34d399']
+                        });
+                    }
+                    const popSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3');
+                    popSound.volume = 0.5;
+                    popSound.play().catch(() => {});
+
+                    showTreasureToast("✨ Backdoor unlocked! Opening make a wish... 🎂");
+
+                    setTimeout(() => {
+                        window.location.href = "cake.html";
+                    }, 600);
+                } else {
+                    showTreasureToast("🔒 \"make a wish\" unlocks on August 31 at 12:00 AM! 🎂");
+                }
+            }
+        };
+    } else {
+        cakeCard.classList.remove('locked-nav');
+        const badge = cakeCard.querySelector('.nav-lock-badge');
+        if (badge) badge.remove();
+    }
+}
+
 // --- Happy Birthday Melody Synthesizer ---
 function playHappyBirthdayTune() {
     try {
@@ -1258,4 +1329,7 @@ if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', applyContentFromJSON);
 } else {
     applyContentFromJSON();
+    initCakeNavLock();
 }
+
+if (document.readyState === "loading") { document.addEventListener("DOMContentLoaded", initCakeNavLock); } else { initCakeNavLock(); }
