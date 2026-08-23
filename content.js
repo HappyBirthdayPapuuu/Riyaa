@@ -126,7 +126,7 @@ window.SITE_CONTENT = {
     "blowButtonText": "🎤 make a wish — blow!",
     "wishTitle": "🎉 wish made! 🎉",
     "wishSubtitle": "Happy Birthday, Papuu!! ♡",
-    "birthdaySong": "assets/birthday.mp3"
+    "birthdaySong": "assets/bdaysong.mp3"
   },
   "memoriesPage": {
     "title": "Riyuuu's Memories 🫧",

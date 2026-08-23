@@ -139,8 +139,31 @@ function initCakeNavLock() {
     });
 }
 
-// --- Happy Birthday Melody Synthesizer ---
+// --- Happy Birthday Audio / Melody ---
 function playHappyBirthdayTune() {
+    const bdayAudio = document.getElementById('birthday-audio') || document.getElementById('cake-birthday-audio');
+    if (bdayAudio) {
+        bdayAudio.currentTime = 0;
+        bdayAudio.play().then(() => {
+            console.log("Playing assets/bdaysong.mp3");
+        }).catch((err) => {
+            console.log("Audio element play error, trying synthesized melody:", err);
+            playSynthesizedBirthdayTune();
+        });
+        return;
+    }
+
+    try {
+        const audio = new Audio('assets/bdaysong.mp3');
+        audio.play().catch(() => {
+            playSynthesizedBirthdayTune();
+        });
+    } catch (e) {
+        playSynthesizedBirthdayTune();
+    }
+}
+
+function playSynthesizedBirthdayTune() {
     try {
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         if (!AudioContext) return;
