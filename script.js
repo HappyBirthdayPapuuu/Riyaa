@@ -3,48 +3,60 @@ let cakeNavTapCount = 0;
 let cakeNavTapTimer = null;
 
 function isCakeUnlocked() {
+    // Check URL backdoor parameter for quick testing
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('unlockCake') === 'true' || params.get('backdoor') === 'cake') {
+        localStorage.setItem('cake_backdoor', 'true');
+    }
     return isCard23DateUnlocked() || localStorage.getItem('cake_backdoor') === 'true';
 }
 
 function initCakeNavLock() {
     const cakeCard = document.querySelector('.nav-card[href="cake.html"], a[href="cake.html"]');
-    if (!cakeCard) return;
-
-    if (!isCakeUnlocked()) {
-        cakeCard.classList.add('locked-nav');
-        if (!cakeCard.querySelector('.nav-lock-badge')) {
-            const badge = document.createElement('span');
-            badge.className = 'nav-lock-badge';
-            badge.textContent = '🔒 Aug 31';
-            cakeCard.appendChild(badge);
+    if (cakeCard) {
+        if (!isCakeUnlocked()) {
+            // Keep button completely hidden before Aug 31 12:00 AM
+            cakeCard.style.display = 'none';
+        } else {
+            // Revealed once unlocked (by date or backdoor)
+            cakeCard.style.display = '';
         }
+    }
 
-        cakeCard.onclick = function(e) {
-            if (!isCakeUnlocked()) {
-                e.preventDefault();
-                e.stopPropagation();
+    // Attach secret 10-tap backdoor on header badge ("Bettuuu✿") and flower icon (🌸)
+    const triggers = [
+        document.querySelector('header .badge'),
+        document.querySelector('.message-card .flower-icon')
+    ];
+
+    triggers.forEach(el => {
+        if (el && !el.dataset.backdoorAttached) {
+            el.dataset.backdoorAttached = 'true';
+            el.style.cursor = 'pointer';
+            el.addEventListener('click', () => {
+                if (isCakeUnlocked()) return;
 
                 cakeNavTapCount++;
                 clearTimeout(cakeNavTapTimer);
                 cakeNavTapTimer = setTimeout(() => { cakeNavTapCount = 0; }, 3500);
 
-                cakeCard.classList.remove('card-shake');
-                void cakeCard.offsetWidth;
-                cakeCard.classList.add('card-shake');
+                el.style.transition = 'transform 0.15s ease';
+                el.style.transform = 'scale(1.2) rotate(6deg)';
+                setTimeout(() => { el.style.transform = ''; }, 150);
 
                 if (cakeNavTapCount >= 10) {
                     cakeNavTapCount = 0;
                     localStorage.setItem('cake_backdoor', 'true');
 
-                    cakeCard.classList.remove('locked-nav');
-                    const badge = cakeCard.querySelector('.nav-lock-badge');
-                    if (badge) badge.remove();
+                    if (cakeCard) {
+                        cakeCard.style.display = '';
+                    }
 
                     if (window.confetti) {
                         confetti({
-                            particleCount: 70,
-                            spread: 70,
-                            origin: { y: 0.7 },
+                            particleCount: 80,
+                            spread: 80,
+                            origin: { y: 0.6 },
                             colors: ['#ffd700', '#ff6b9e', '#a78bfa', '#34d399']
                         });
                     }
@@ -52,21 +64,15 @@ function initCakeNavLock() {
                     popSound.volume = 0.5;
                     popSound.play().catch(() => {});
 
-                    showTreasureToast("✨ Backdoor unlocked! Opening make a wish... 🎂");
+                    showTreasureToast("✨ Secret backdoor unlocked! Opening Make a Wish... 🎂");
 
                     setTimeout(() => {
                         window.location.href = "cake.html";
-                    }, 600);
-                } else {
-                    showTreasureToast("🔒 \"make a wish\" unlocks on August 31 at 12:00 AM! 🎂");
+                    }, 700);
                 }
-            }
-        };
-    } else {
-        cakeCard.classList.remove('locked-nav');
-        const badge = cakeCard.querySelector('.nav-lock-badge');
-        if (badge) badge.remove();
-    }
+            });
+        }
+    });
 }
 
 // --- Happy Birthday Melody Synthesizer ---

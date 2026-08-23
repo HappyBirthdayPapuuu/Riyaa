@@ -906,6 +906,8 @@ function triggerWish() {
 
 // Check date lock on load
 document.addEventListener('DOMContentLoaded', () => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('unlockCake') === 'true' || params.get('backdoor') === 'true') { localStorage.setItem('cake_backdoor', 'true'); }
     const isUnlocked = isCakeDateUnlocked() || localStorage.getItem('cake_backdoor') === 'true';
     if (isUnlocked) {
         const overlay = document.getElementById('cake-lock-overlay');
