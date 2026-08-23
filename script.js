@@ -1,3 +1,8 @@
+// Clear legacy permanent backdoor localStorage flags so closing tab resets locks
+try {
+    sessionStorage.removeItem('cake_backdoor');
+    sessionStorage.removeItem('card23_backdoor');
+} catch(e) {}
 // --- Make a Wish Nav Card Lock & 10-Tap Backdoor ---
 let cakeNavTapCount = 0;
 let cakeNavTapTimer = null;
@@ -6,9 +11,9 @@ function isCakeUnlocked() {
     // Check URL backdoor parameter for quick testing
     const params = new URLSearchParams(window.location.search);
     if (params.get('unlockCake') === 'true' || params.get('backdoor') === 'cake') {
-        localStorage.setItem('cake_backdoor', 'true');
+        sessionStorage.setItem('cake_backdoor', 'true');
     }
-    return isCard23DateUnlocked() || localStorage.getItem('cake_backdoor') === 'true';
+    return isCard23DateUnlocked() || sessionStorage.getItem('cake_backdoor') === 'true';
 }
 
 function initCakeNavLock() {
@@ -46,7 +51,7 @@ function initCakeNavLock() {
 
                 if (cakeNavTapCount >= 10) {
                     cakeNavTapCount = 0;
-                    localStorage.setItem('cake_backdoor', 'true');
+                    sessionStorage.setItem('cake_backdoor', 'true');
 
                     if (cakeCard) {
                         cakeCard.style.display = '';
@@ -369,7 +374,7 @@ function isCard23DateUnlocked() {
 }
 
 function isCard23Unlocked() {
-    return isCard23DateUnlocked() || localStorage.getItem('card23_backdoor') === 'true';
+    return isCard23DateUnlocked() || sessionStorage.getItem('card23_backdoor') === 'true';
 }
 
 function showTreasureToast(message) {
@@ -393,7 +398,7 @@ let card23TapTimer = null;
 
 function handleCard23Tap(cardElement) {
     const isDateUnlocked = isCard23DateUnlocked();
-    const isBackdoor = localStorage.getItem('card23_backdoor') === 'true';
+    const isBackdoor = sessionStorage.getItem('card23_backdoor') === 'true';
     const isUnlocked = isDateUnlocked || isBackdoor;
     const maxUnlocked = parseInt(localStorage.getItem('treasureProgress') || '1', 10);
 
@@ -418,7 +423,7 @@ function handleCard23Tap(cardElement) {
     if (card23TapCount >= 10) {
         // Backdoor triggered!
         card23TapCount = 0;
-        localStorage.setItem('card23_backdoor', 'true');
+        sessionStorage.setItem('card23_backdoor', 'true');
 
         cardElement.classList.remove('locked', 'date-locked');
         cardElement.classList.add('unlocked', 'active');
@@ -472,7 +477,7 @@ function initTreasureHunt() {
                 card.querySelector('.found-btn')?.classList.add('hidden');
                 card.querySelector('.completed-check')?.classList.remove('hidden');
                 if (dateHint) dateHint.style.display = 'none';
-            } else if (card23Unlocked && (maxUnlocked >= 23 || localStorage.getItem('card23_backdoor') === 'true')) {
+            } else if (card23Unlocked && (maxUnlocked >= 23 || sessionStorage.getItem('card23_backdoor') === 'true')) {
                 // Unlocked either normally by reaching card 23 after Aug 31 12am OR via backdoor
                 card.classList.remove('locked', 'date-locked', 'completed');
                 card.classList.add('unlocked', 'active');
@@ -624,8 +629,8 @@ function unlockNextCard(currentCardNum) {
 function resetHunt() {
     if(confirm("Are you sure you want to reset all progress?")) {
         localStorage.setItem('treasureProgress', '1');
-        localStorage.removeItem('card23_backdoor');
-        localStorage.removeItem('cake_backdoor');
+        sessionStorage.removeItem('card23_backdoor');
+        sessionStorage.removeItem('cake_backdoor');
         document.querySelectorAll('.treasure-card.flipped').forEach(c => c.classList.remove('flipped'));
         setTimeout(() => {
             initTreasureHunt();
