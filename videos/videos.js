@@ -10,6 +10,18 @@ window.TREASURE_VIDEOS = [
     "caption": "from Hrudaya"
   },
   {
+    "file": "Mithun.mp4",
+    "caption": "from Mithun"
+  },
+  {
+    "file": "Poochii.mp4",
+    "caption": "from Poochii"
+  },
+  {
+    "file": "Pramothini.mp4",
+    "caption": "from Pramothini"
+  },
+  {
     "file": "Sheetha.mp4",
     "caption": "from Sheetha"
   }

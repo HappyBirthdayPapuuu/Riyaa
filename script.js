@@ -278,20 +278,10 @@ function openEnvelope() {
                 startEmojiRain();
 
                 // Music playback on opening envelope:
+                // Only autoplay the birthday song on/after Aug 31 12:00 AM IST.
+                // "Eppadi Vandhaayo" is available via the play button — no autoplay.
                 if (isBirthdaySongActive()) {
-                    // On/After Aug 31 12:00 AM (or with backdoor preview): Play Happy Birthday celebration song/tune
                     playHappyBirthdayTune();
-                } else {
-                    // All other times: Play "Eppadi Vandhaayo"
-                    const audio = document.getElementById('bg-music');
-                    const playBtn = document.getElementById('play-btn');
-                    if (audio && audio.src && !audio.src.endsWith('index.html')) {
-                        audio.play().then(() => {
-                            if (playBtn) playBtn.textContent = '⏸';
-                        }).catch((err) => {
-                            console.log("Audio autoplay note:", err);
-                        });
-                    }
                 }
             }, 800);
             
@@ -966,6 +956,14 @@ function openVideoModal() {
     const modal = document.getElementById('video-modal');
     if (modal) {
         modal.classList.remove('hidden');
+        // Auto-play the first video once the modal is visible
+        setTimeout(() => {
+            const activeCard = document.querySelector('#video-stack-container .active-card');
+            if (activeCard) {
+                const vid = activeCard.querySelector('video');
+                if (vid) vid.play().catch(() => {});
+            }
+        }, 200);
     }
 }
 
@@ -989,6 +987,14 @@ function nextVideo() {
         pauseAllVideos();
         currentVideoIndex++;
         updateVideoStackDisplay();
+        // Auto-play the newly active video
+        setTimeout(() => {
+            const activeCard = document.querySelector('#video-stack-container .active-card');
+            if (activeCard) {
+                const vid = activeCard.querySelector('video');
+                if (vid) vid.play().catch(() => {});
+            }
+        }, 150);
     }
 }
 
@@ -997,6 +1003,14 @@ function prevVideo() {
         pauseAllVideos();
         currentVideoIndex--;
         updateVideoStackDisplay();
+        // Auto-play the newly active video
+        setTimeout(() => {
+            const activeCard = document.querySelector('#video-stack-container .active-card');
+            if (activeCard) {
+                const vid = activeCard.querySelector('video');
+                if (vid) vid.play().catch(() => {});
+            }
+        }, 150);
     }
 }
 
