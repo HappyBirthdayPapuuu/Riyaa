@@ -451,6 +451,14 @@ function isCard23Unlocked() {
     return isCard23DateUnlocked() || sessionStorage.getItem('card23_backdoor') === 'true';
 }
 
+function isCard3Unlocked() {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('unlockCard3') === 'true' || params.get('unlockAll') === 'true' || params.get('backdoor') === 'card3' || params.get('backdoor') === 'all' || params.get('backdoor') === 'true') {
+        sessionStorage.setItem('card3_backdoor', 'true');
+    }
+    return isCard23DateUnlocked() || sessionStorage.getItem('card3_backdoor') === 'true';
+}
+
 function showTreasureToast(message) {
     let toast = document.getElementById('treasure-toast');
     if (!toast) {
@@ -465,6 +473,67 @@ function showTreasureToast(message) {
     window.treasureToastTimeout = setTimeout(() => {
         toast.classList.remove('show');
     }, 2800);
+}
+
+let card3TapCount = 0;
+let card3TapTimer = null;
+
+function handleCard3Tap(cardElement) {
+    const isDateUnlocked = isCard23DateUnlocked();
+    const isBackdoor = sessionStorage.getItem('card3_backdoor') === 'true';
+    const isUnlocked = isDateUnlocked || isBackdoor;
+    const maxUnlocked = parseInt(localStorage.getItem('treasureProgress') || '1', 10);
+
+    if (isUnlocked && !cardElement.classList.contains('locked')) {
+        cardElement.classList.toggle('flipped');
+        return;
+    }
+
+    card3TapCount++;
+    clearTimeout(card3TapTimer);
+    card3TapTimer = setTimeout(() => {
+        card3TapCount = 0;
+    }, 3500);
+
+    cardElement.classList.remove('card-shake');
+    void cardElement.offsetWidth;
+    cardElement.classList.add('card-shake');
+
+    if (card3TapCount >= 10) {
+        card3TapCount = 0;
+        sessionStorage.setItem('card3_backdoor', 'true');
+
+        cardElement.classList.remove('locked', 'date-locked');
+        cardElement.classList.add('unlocked', 'active');
+        const dateHint = cardElement.querySelector('.lock-date-hint');
+        if (dateHint) dateHint.style.display = 'none';
+
+        if (window.confetti) {
+            confetti({
+                particleCount: 60,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#ffb3c6', '#ff6b9e', '#ffd700', '#a18cd1', '#87ceeb']
+            });
+        }
+        const popSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3');
+        popSound.volume = 0.5;
+        popSound.play().catch(() => {});
+
+        showTreasureToast("✨ Backdoor unlocked! Opening Clue 3... 🎁");
+
+        setTimeout(() => {
+            cardElement.classList.add('flipped');
+        }, 350);
+    } else {
+        if (!isDateUnlocked && maxUnlocked >= 3) {
+            showTreasureToast("🔒 Unlocks on August 31 at 12:00 AM! 🎂");
+        } else if (!isDateUnlocked) {
+            showTreasureToast("🔒 Clue 3 unlocks on August 31 at 12:00 AM! ✨");
+        } else {
+            showTreasureToast("🔒 Find the earlier gifts first! 🎁");
+        }
+    }
 }
 
 let card23TapCount = 0;
@@ -537,10 +606,41 @@ function handleCard23Tap(cardElement) {
 function initTreasureHunt() {
     const maxUnlocked = parseInt(localStorage.getItem('treasureProgress') || '1', 10);
     const card23Unlocked = isCard23Unlocked();
+    const card3Unlocked = isCard3Unlocked();
 
     for (let i = 1; i <= 23; i++) {
         const card = document.querySelector(`.treasure-card[data-card="${i}"]`);
         if (!card) continue;
+
+        if (i === 3) {
+            const dateHint = card.querySelector('.lock-date-hint');
+            if (i < maxUnlocked && card3Unlocked) {
+                card.classList.remove('locked', 'date-locked');
+                card.classList.add('unlocked', 'completed');
+                card.querySelector('.found-btn')?.classList.add('hidden');
+                card.querySelector('.completed-check')?.classList.remove('hidden');
+                if (dateHint) dateHint.style.display = 'none';
+            } else if (card3Unlocked && (i === maxUnlocked || maxUnlocked >= 3)) {
+                card.classList.remove('locked', 'date-locked', 'completed');
+                card.classList.add('unlocked', 'active');
+                card.querySelector('.found-btn')?.classList.remove('hidden');
+                card.querySelector('.completed-check')?.classList.add('hidden');
+                if (dateHint) dateHint.style.display = 'none';
+            } else if (!card3Unlocked && maxUnlocked >= 3) {
+                card.classList.remove('unlocked', 'active', 'completed');
+                card.classList.add('locked', 'date-locked');
+                card.querySelector('.found-btn')?.classList.remove('hidden');
+                card.querySelector('.completed-check')?.classList.add('hidden');
+                if (dateHint) dateHint.style.display = 'inline-block';
+            } else {
+                card.classList.remove('unlocked', 'active', 'completed', 'date-locked');
+                card.classList.add('locked');
+                card.querySelector('.found-btn')?.classList.remove('hidden');
+                card.querySelector('.completed-check')?.classList.add('hidden');
+                if (dateHint) dateHint.style.display = 'none';
+            }
+            continue;
+        }
 
         if (i === 23) {
             const dateHint = card.querySelector('.lock-date-hint');
@@ -590,6 +690,10 @@ function initTreasureHunt() {
 
 function flipTreasureCard(cardElement) {
     const cardNum = parseInt(cardElement.getAttribute('data-card'), 10);
+    if (cardNum === 3 && !isCard3Unlocked() && cardElement.classList.contains('locked')) {
+        handleCard3Tap(cardElement);
+        return;
+    }
     if (cardNum === 23) {
         handleCard23Tap(cardElement);
         return;
@@ -619,9 +723,18 @@ function unlockNextCard(currentCardNum) {
     }
 
     const nextCardNum = currentCardNum + 1;
-    const maxUnlocked = parseInt(localStorage.getItem('treasureProgress') || '1', 10);
-    if (nextCardNum > maxUnlocked) {
-        localStorage.setItem('treasureProgress', nextCardNum.toString());
+    let maxUnlocked = parseInt(localStorage.getItem('treasureProgress') || '1', 10);
+
+    if (currentCardNum === 2 && !isCard3Unlocked()) {
+        if (maxUnlocked < 4) {
+            localStorage.setItem('treasureProgress', '4');
+            maxUnlocked = 4;
+        }
+    } else {
+        if (nextCardNum > maxUnlocked) {
+            localStorage.setItem('treasureProgress', nextCardNum.toString());
+            maxUnlocked = nextCardNum;
+        }
     }
 
     const currentCard = document.querySelector(`.treasure-card[data-card="${currentCardNum}"]`);
@@ -637,8 +750,28 @@ function unlockNextCard(currentCardNum) {
     }
 
     if (nextCardNum <= 23) {
-        const nextCard = document.querySelector(`.treasure-card[data-card="${nextCardNum}"]`);
-        if (nextCardNum === 23 && !isCard23Unlocked()) {
+        if (currentCardNum === 2 && !isCard3Unlocked()) {
+            const card3 = document.querySelector(`.treasure-card[data-card="3"]`);
+            const card4 = document.querySelector(`.treasure-card[data-card="4"]`);
+            if (card3) {
+                card3.classList.remove('unlocked', 'active', 'completed');
+                card3.classList.add('locked', 'date-locked');
+                const dateHint = card3.querySelector('.lock-date-hint');
+                if (dateHint) dateHint.style.display = 'inline-block';
+            }
+            if (card4) {
+                card4.classList.remove('locked', 'date-locked');
+                card4.classList.add('unlocked', 'active');
+                const dateHint = card4.querySelector('.lock-date-hint');
+                if (dateHint) dateHint.style.display = 'none';
+
+                setTimeout(() => {
+                    card4.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    showTreasureToast("🎉 Clue 2 completed! Clue 3 unlocks Aug 31 — Clue 4 is now open! 🎁");
+                }, 1000);
+            }
+        } else if (nextCardNum === 23 && !isCard23Unlocked()) {
+            const nextCard = document.querySelector(`.treasure-card[data-card="${nextCardNum}"]`);
             if (nextCard) {
                 nextCard.classList.remove('unlocked', 'active', 'completed');
                 nextCard.classList.add('locked', 'date-locked');
@@ -650,6 +783,7 @@ function unlockNextCard(currentCardNum) {
                 }, 1000);
             }
         } else {
+            const nextCard = document.querySelector(`.treasure-card[data-card="${nextCardNum}"]`);
             if (nextCard) {
                 nextCard.classList.remove('locked', 'date-locked');
                 nextCard.classList.add('unlocked', 'active');
@@ -703,6 +837,7 @@ function unlockNextCard(currentCardNum) {
 function resetHunt() {
     if(confirm("Are you sure you want to reset all progress?")) {
         localStorage.setItem('treasureProgress', '1');
+        sessionStorage.removeItem('card3_backdoor');
         sessionStorage.removeItem('card23_backdoor');
         sessionStorage.removeItem('cake_backdoor');
         document.querySelectorAll('.treasure-card.flipped').forEach(c => c.classList.remove('flipped'));
