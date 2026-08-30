@@ -57,6 +57,8 @@ if os.path.exists(content_json_path):
 
         # Countdown
         countdown = hp.get('countdown', {})
+        if countdown.get('label'):
+            html = re.sub(r'(<p class="countdown-label">)[^<]*(</p>)', r'\g<1>' + countdown['label'] + r'\g<2>', html)
         if countdown.get('birthdayLabel'):
             html = re.sub(r'(<p class="countdown-date">)[^<]*(</p>)', r'\g<1>' + countdown['birthdayLabel'] + r'\g<2>', html)
 

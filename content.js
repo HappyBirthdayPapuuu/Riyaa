@@ -18,6 +18,7 @@ window.SITE_CONTENT = {
     },
     "countdown": {
       "targetDate": "2026-08-31T00:00:00",
+      "label": "Your special day arrives in",
       "birthdayLabel": "august 31 ✨",
       "celebrationText": "it's your special day! 🎉",
       "units": {

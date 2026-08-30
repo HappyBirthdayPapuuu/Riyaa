@@ -307,7 +307,7 @@ function startCountdown() {
             document.querySelectorAll('.countdown-text').forEach(el => el.textContent = '');
             document.querySelectorAll('.countdown-separator').forEach(el => el.textContent = '');
             const label = document.querySelector('.countdown-label');
-            if (label) label.textContent = "it's her special day! 🎉";
+            if (label) label.textContent = "it's your special day! 🎉";
             return;
         }
 
