@@ -151,7 +151,7 @@ if os.path.exists(content_json_path):
             clues = th['clues']
             for i, clue in enumerate(clues):
                 card_num = i + 1
-                pattern = rf'(<div class="treasure-card" data-card="{card_num}">[\s\S]*?<div class="treasure-card-back">[\s\S]*?<p>)[^<]*(</p>)'
+                pattern = rf'(<div class="treasure-card[^"]*" data-card="{card_num}"[\s\S]*?<div class="treasure-card-back">[\s\S]*?<p>)[^<]*(</p>)'
                 a_html = re.sub(pattern, r'\g<1>' + clue + r'\g<2>', a_html)
         if th.get('videoModalTitle'):
             a_html = re.sub(r'(<div id="video-modal"[^>]*>[\s\S]*?<h2>)[^<]*(</h2>)', r'\g<1>' + th['videoModalTitle'] + r'\g<2>', a_html)
