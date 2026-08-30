@@ -957,7 +957,7 @@ header h1 {
 
 /* Countdown Timer */
 .countdown-section {
-    display: none; /* Hidden for now, code preserved */
+    display: block;
     text-align: center;
     margin: 2rem 0;
     padding: 30px 20px;
