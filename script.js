@@ -1035,7 +1035,62 @@ function initVideoModal() {
         stackContainer.appendChild(card);
     });
 
+    setupVideoSwipeAndControls();
     updateVideoStackDisplay();
+}
+
+let touchStartX = 0;
+let touchStartY = 0;
+
+function setupVideoSwipeAndControls() {
+    const modal = document.getElementById('video-modal');
+    const stackContainer = document.getElementById('video-stack-container');
+    if (!modal || modal.dataset.listenersAttached) return;
+
+    modal.dataset.listenersAttached = 'true';
+
+    if (stackContainer) {
+        stackContainer.addEventListener('touchstart', (e) => {
+            if (e.touches.length === 1) {
+                touchStartX = e.touches[0].clientX;
+                touchStartY = e.touches[0].clientY;
+            }
+        }, { passive: true });
+
+        stackContainer.addEventListener('touchend', (e) => {
+            if (!e.changedTouches || e.changedTouches.length === 0) return;
+            const touchEndX = e.changedTouches[0].clientX;
+            const touchEndY = e.changedTouches[0].clientY;
+            const diffX = touchEndX - touchStartX;
+            const diffY = touchEndY - touchStartY;
+
+            if (Math.abs(diffX) > 35 && Math.abs(diffX) > Math.abs(diffY) * 1.2) {
+                if (diffX < 0) {
+                    nextVideo();
+                } else {
+                    prevVideo();
+                }
+            }
+        }, { passive: true });
+    }
+
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            closeVideoModal();
+        }
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (modal && !modal.classList.contains('hidden')) {
+            if (e.key === 'Escape') {
+                closeVideoModal();
+            } else if (e.key === 'ArrowRight') {
+                nextVideo();
+            } else if (e.key === 'ArrowLeft') {
+                prevVideo();
+            }
+        }
+    });
 }
 
 function updateVideoStackDisplay() {

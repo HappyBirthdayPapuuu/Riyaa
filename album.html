@@ -450,14 +450,14 @@
     <!-- Video Stacked Modal -->
     <div id="video-modal" class="hidden">
         <div class="video-modal-content">
-            <button class="close-modal-btn" onclick="closeVideoModal()">✖</button>
-            <h2 style="font-family: 'Caveat', cursive; color: var(--accent-orange); font-size: 2.2rem; margin-bottom: 20px;">messages from the gang ✿</h2>
+            <button class="close-modal-btn" onclick="closeVideoModal()" aria-label="Close modal">✖</button>
+            <h2>messages from the gang ✿</h2>
             <div class="video-stack-container" id="video-stack-container">
                 <!-- Dynamically populated from videos folder -->
             </div>
-            <div class="video-nav-btns" style="display: flex; align-items: center; justify-content: center; gap: 15px;">
+            <div class="video-nav-btns">
                 <button onclick="prevVideo()" id="prev-vid-btn" disabled>← Previous</button>
-                <span id="video-counter" style="color: var(--text-main); font-family: 'Outfit', sans-serif; font-weight: 600; font-size: 1.1rem; min-width: 60px; text-align: center;">1 / 1</span>
+                <span id="video-counter">1 / 1</span>
                 <button onclick="nextVideo()" id="next-vid-btn">Next →</button>
             </div>
         </div>
