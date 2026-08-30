@@ -2,7 +2,7 @@
 // Drop any new videos in videos/ and run python3 sync_all.py to refresh.
 window.TREASURE_VIDEOS = [
   {
-    "file": "Ajjuuu.MOV",
+    "file": "Ajjuuu.mp4",
     "caption": "from Ajjuuu"
   },
   {
