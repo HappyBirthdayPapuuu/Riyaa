@@ -158,7 +158,7 @@ window.SITE_CONTENT = {
     "clues": [
       "Every time we went out, your eyes found it before your words did.",
       "Your biggest trip starts soon — and this goes right along with it.",
-      "Some special greetings for you.",
+      "Open home page and find make a wish button (One more gift is waiting for u physically in blr)",
       "This one you already picked. Look at what you're wearing right now.",
       "One half is yours. One half is mine. Figure out the rest.",
       "For the girl with a hundred things to do and zero time to forget any of them.",
